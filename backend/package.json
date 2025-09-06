@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "prebuild": "cd ../packages/prisma && npm run generate",
     "build": "nest build && npm run postbuild",
     "postbuild": "node -e \"const fs = require('fs'); const path = require('path'); if (fs.existsSync('src/generated')) { fs.cpSync('src/generated', 'dist/generated', { recursive: true }); console.log('✅ Copied Prisma client to dist/generated'); }\"",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

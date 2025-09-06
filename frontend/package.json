@@ -39,6 +39,7 @@
   },
   "scripts": {
     "dev": "refine dev",
+    "prebuild": "cd ../packages/prisma && npm run generate",
     "build": "tsc && refine build",
     "start": "refine start",
     "refine": "refine"

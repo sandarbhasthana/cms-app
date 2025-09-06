@@ -91,6 +91,18 @@ model Crew {
   @@index([orgId, rank])
 }
 
+/// New model for onboarding draft 
+model CrewOnboardingDraft { 
+  id        String      @id @default(uuid()) 
+  crewId    String      @unique 
+  data      Json        @default({}) 
+  status    DraftStatus @default(IN_PROGRESS) 
+  updatedAt DateTime    @updatedAt
+  crew      Crew        @relation(fields: [crewId], references: [id], onDelete: Cascade) 
+
+  @@unique([crewId]) 
+}
+
 /// Vessels that the company owns and uses
 model Vessel {
   id                 String                  @id @default(uuid())

@@ -9,17 +9,16 @@
   "scripts": {
     "build": "tsc",
     "generate": "prisma generate && npm run build",
-    "postinstall": "prisma generate && npm run build",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@prisma/client": "^6.10.1"
+    "@prisma/client": "^6.10.1",
+    "prisma": "^6.10.1"
   },
   "devDependencies": {
-    "prisma": "^6.10.1",
     "typescript": "^5.0.0"
   },
   "exports": {

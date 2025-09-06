@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd packages/prisma && npm run generate && cd ../../frontend && npm run build",
+  "installCommand": "npm install",
+  "framework": null
+}
