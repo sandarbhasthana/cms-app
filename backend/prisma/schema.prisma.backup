@@ -1,0 +1,620 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Organizations that use the system
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+}
+
+/// Users of the system
+model User {
+  id              String       @id @default(uuid())
+  email           String       
+  password        String
+  role            Role         @default(CREW)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  orgId           String
+  name            String
+  createdBy       String
+  updatedBy       String
+  creator         User         @relation("CreatedUsers", fields: [createdBy], references: [id])
+  createdUsers    User[]       @relation("CreatedUsers")
+  org             Organization @relation(fields: [orgId], references: [id])
+  updater         User         @relation("UpdatedUsers", fields: [updatedBy], references: [id])
+  updatedUsers    User[]       @relation("UpdatedUsers")
+
+  @@unique([orgId, email])
+  @@unique([id, orgId])
+  @@index([orgId, role])
+}
+
+/// Audit log for tracking user actions
+model AuditLog {
+  id           String   @id @default(uuid())
+  action       String
+  actorId      String
+  targetUserId String?
+  orgId        String
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  @@index([orgId])
+  @@index([actorId])
+  @@index([targetUserId])
+}
+
+/// Crew members that work for the company
+model Crew {
+  id                     String             @id @default(uuid())
+  orgId                  String             
+  org                    Organization       @relation(fields: [orgId], references: [id])
+  userId                 String             @unique
+  user                   User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName              String
+  lastName               String
+  primaryDepartment      VesselDepartment
+  rank                   VesselRole
+  status                 CrewStatus         @default(ACTIVE)
+  dateJoined             DateTime?
+  dateLeft               DateTime?
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+  Document               Document[]
+  TrainingRecord         TrainingRecord[]
+  VesselAssignment       VesselAssignment[]
+
+  @@unique([id, orgId])
+  @@index([orgId, lastName, firstName])
+  @@index([orgId, rank])
+}
+
+/// Vessels that the company owns and uses
+model Vessel {
+  id                  String             @id @default(uuid())
+  orgId               String
+  org                 Organization       @relation(fields: [orgId], references: [id])
+  name                String
+  imoNumber           String
+  capacity            Int?
+  homePort            String?
+  vesselType          VesselType?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  bhpKw               Float?
+  companyName         String?
+  dwt                 Int?
+  flag                String?
+  grt                 Int?
+  tonnageValue        Float?
+  ums                 Boolean?
+  yearBuilt           Int?
+  engineMake          EngineMake?
+  tonnageUnit         TonnageUnit?
+  inspectionDueDate   DateTime?
+  rankRequirements    VesselRankRequirement[]
+  VesselAssignment    VesselAssignment[]
+
+  @@unique([id, orgId])
+  @@unique([imoNumber, orgId])
+  @@index([orgId, inspectionDueDate])
+}
+
+/// Vessel user roles
+model VesselUserRoleMap {
+  id            String          @id @default(uuid())
+  orgId         String
+  org           Organization    @relation(fields: [orgId], references: [id])
+  vesselId      String
+  vessel        Vessel          @relation(fields: [vesselId, orgId], references: [id, orgId], onDelete: Cascade)
+  userId        String
+  user          User            @relation(fields: [userId, orgId], references: [id, orgId], onDelete: Cascade)
+  role          VesselUserRole
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  
+  @@unique([vesselId, userId, role])
+  @@index([orgId, vesselId, userId])
+  @@index([orgId, role])
+}
+
+/// Defines the rank requirements for a vessel
+model VesselRankRequirement {
+  id                  String     @id @default(uuid())
+  vesselId            String
+  role                VesselRole 
+  requiredCount       Int
+
+  vessel Vessel       @relation(fields: [vesselId], references: [id], onDelete: Cascade)
+
+  @@unique([vesselId, role])
+  @@index([vesselId])
+}
+
+/// Documents that are uploaded for crew members
+model Document {
+  id         String       @id @default(uuid())
+  crewId     String
+  type       DocumentType @default(PASSPORT)
+  fileName   String
+  url        String
+  uploadedAt DateTime     @default(now())
+  issueDate  DateTime?
+  expiryDate DateTime?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  crew       Crew         @relation(fields: [crewId], references: [id])
+
+  @@index([crewId])
+}
+
+/// Records each crew member’s assignment to a vessel
+model VesselAssignment {
+  id            String         @id @default(uuid())
+  orgId         String
+  org           Organization   @relation(fields: [orgId], references: [id])
+  vesselId      String
+  crewId        String
+  role          VesselRole
+  assignedAt    DateTime       @default(now())
+  releasedAt    DateTime?
+  crew          Crew           @relation(fields: [crewId, orgId], references: [id, orgId], onDelete: Cascade)
+  vessel        Vessel         @relation(fields: [vesselId, orgId], references: [id, orgId], onDelete: Cascade)
+
+  @@index([orgId, vesselId, releasedAt, assignedAt])
+  @@index([orgId, crewId, releasedAt, assignedAt])
+  @@index([orgId])
+}
+
+/// Consultancy partners that the company will use to assign THIRD party tasks
+model ConsultancyPartner {
+  id           String              @id @default(uuid())
+  name         String
+  category     ConsultancyCategory
+  contactEmail String?
+  approvedBy   String?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+}
+
+/// Organizations or vendors that provide training courses
+model TrainingPartner {
+  id           String   @id @default(uuid())
+  name         String
+  contactEmail String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  courses      Course[]
+}
+
+/// Individual training courses, categorized and tied to a partner
+model Course {
+  id             String           @id @default(uuid())
+  title          String
+  description    String?
+  trainingType   TrainingType     @default(INTERNAL)
+  partnerId      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  partner        TrainingPartner? @relation(fields: [partnerId], references: [id])
+  TrainingRecord TrainingRecord[]
+}
+
+/// Records each crew member’s completion of a course
+model TrainingRecord {
+  id         String    @id @default(uuid())
+  crewId     String
+  courseId   String
+  dateTaken  DateTime  @default(now())
+  expiryDate DateTime?
+  status     String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  course     Course    @relation(fields: [courseId], references: [id])
+  crew       Crew      @relation(fields: [crewId], references: [id])
+
+  @@index([crewId])
+  @@index([courseId])
+}
+
+/// Define user roles
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  HR
+  SCHEDULER
+  PAYROLL
+  CREW
+  AUDITOR
+  COMPLIANCE_VIEWER
+  CREW_COORDINATOR
+}
+
+/// Roles a crew member can have on a vessel
+enum VesselRole {
+  CAPTAIN
+  SECOND_COOK                @map("SECOND Cook")
+  SECOND_ENGINEER            @map("SECOND Engineer")
+  SECOND_ENGINEER_NCV        @map("SECOND Engineer NCV")
+  SECOND_OFFICER             @map("SECOND Officer")
+  THIRD_ENGINEER             @map(" THIRD Engineer")
+  THIRD_OFFICER              @map("THIRD Officer")
+  FOURTH_ENGINEER            @map("FOURTH Engineer")
+  FOURTH_ENGINEER_NCV        @map("FOURTH Engineer NCV")
+  FIFTH_ENGINEER             @map("FIFTH Engineer")
+  AB                         @map("Able Seaman")
+  ADDL_SECOND_ENGINEER       @map("Additonal SECOND Engineer")
+  ADDL_SECOND_OFFICER        @map("Additonal SECOND Officer")
+  ADDL_THIRD_ENGINEER        @map("Additonal THIRD Engineer")
+  ADDL_CHIEF_ENGINEER        @map("Additonal Chief Engineer")
+  ADDL_CHIEF_OFFICER         @map("Additonal Chief Officer")
+  ADD_MASTER                 @map("Additonal Master")
+  ASST_ELECTRICAL_OFFICER    @map("Assistant Electrical Officer")
+  BAR_TENDER                 @map("Bar Tender")
+  BOSUN                      @map("Bosun")
+  CABIN_ATTENDANT            @map("Cabin Attendant")
+  CARGO_ENGINEER             @map("Cargo Engineer")
+  CHEF                       @map("Chief")
+  CHIEF_COOK                 @map("Chief Cook")
+  CHIEF_ENGINEER             @map("Chief Engineer")
+  CHIEF_ENGINEER_NCV         @map("Chief Engineer NCV")
+  CHIEF_OFFICER              @map("Chief Officer")
+  CHIEF_OFFICER_NCV          @map("Chief Officer NCV")
+  CHIEF_STEWARD              @map("Chief Steward")
+  CRANE_OPERATOR             @map("Crane Operator")
+  DECK_CADET                 @map("Deck Cadet")
+  DECK_FITTER                @map("Deck Fitter")
+  DIVE_ELECTRICAL_TECHNICIAN @map("Dive Electrical Technician")
+  DPO                        @map("DPO")
+  DPO_SECOND_OFFICER         @map("DPO SECOND Officer")
+  DPO_THIRD_OFFICER          @map("DPO THIRD Officer")
+  DPO_CHIEF_OFFICER          @map("DPO Chief Officer")
+  DPO_MASTER                 @map("DPO Master")
+  DREDGER_CUTTER_OPERATOR    @map("Dredge Cutter Operator")
+  DREDGER_ENGINEER           @map("Dredge Engineer")
+  DUAL_CADET                 @map("Dual Cadet")
+  ELECTRICAL_ENGINEER        @map("Electrical Engineer")
+  ELECTRICAL_OFFICER         @map("Electrical Officer")
+  ELECTRO_TECHNICAL_ENGINEER @map("Electro Technical Engineer")
+  ENGINE_FITTER              @map("Engine Fitter")
+  EXTRA_MASTER               @map("Extra Master")
+  FITTER                     @map("Fitter")
+  GAS_ENGINEER               @map("Gas Engineer")
+  GP                         @map("GP")
+  HOTEL_MANAGER              @map("Hotel Manager")
+  INFOTECH                   @map("Infotech")
+  INLAND_MASTER              @map("Inland Master")
+  INSTRUCTOR                 @map("Instructor")
+  INTERNAL_AUDITOR           @map("Internal Auditor")
+  JR_DPO_CHIEF_OFFICER       @map("Junior DPO Chief Officer")
+  JUNIOR_THIRD_OFFICER       @map("Junior THIRD Officer")
+  JUNIOR_FOURTH_OFFICER      @map("Junior FOURTH Officer")
+  JUNIOR_DPO                 @map("Junior DPO")
+  JUNIOR_ENGINEER            @map("Junior Engineer")
+  JUNIOR_OFFICER             @map("Junior Officer")
+  LAUNDRYMAN                 @map("Laundryman")
+  MARINE_CONSULTANCY         @map("Marine Consultancy")
+  MASTER                     @map("Master")
+  MASTER_MARINER             @map("Master Mariner")
+  MASTER_NCV                 @map("Master NCV")
+  MOTORMAN                   @map("Motorman")
+  MUSICIAN                   @map("Musician")
+  NCV_NWKO                   @map("NCV NWKO")
+  OFFSHORE_INSTALLATION      @map("Offshore Installation")
+  OILER                      @map("Oiler")
+  OS                         @map("OS")
+  PERSONNEL_MANAGER          @map("Personnel Manager")
+  PIPE_OPERATOR              @map("Pipe Operator")
+  PORT_OPERATION             @map("Port Operation")
+  PUMPMAN                    @map("Pumpman")
+  PURSER                     @map("Purser")
+  RADIO_OFFICER              @map("Radio Officer")
+  REEFER_ENGINEER            @map("Reefer Engineer")
+  REEFER_MECHANIC            @map("Reefer Mechanic")
+  REPAIR_YARD_DD             @map("Repair Yard D.D")
+  RIGGER                     @map("Rigger")
+  ROUSTABOUT                 @map("Roustabout")
+  SAFETY_OFFICER             @map("Safety officer")
+  SOUSE_CHEF                 @map("Souse Chef")
+  SPORTS_DIRECTOR            @map("Sports Director")
+  SR_DPO_CHIEF_OFFICER       @map("Senior DPO Chief Officer")
+  SR_DPO_MASTER              @map("Senior DPO Master")
+  STEWARD                    @map("Steward")
+  SUPERINTENDENT             @map("Superintendent")
+  TECHNICAL_MANAGER          @map("Technical Manager")
+  TRAINEE_C_E                @map("Trainer C E")
+  TRAINEE_CADET              @map("Trainee Cadet")
+  TRAINEE_ELECTRICAL_OFFICER @map("Trainee Electrical Officer")
+  TRAINEE_ENGINEER           @map("Trainee Engineer")
+  TRAVEL_COORDINATOR         @map("Travel Co-ordinator")
+  TRAVEL_FITTER              @map("Travel Fitter")
+  TRAVEL_WIPER               @map("Travel Wiper")
+  TUBE_OPERATOR              @map("Tube Operator")
+  TUG_HANDLER                @map("Tug Handler")
+  VOY_REP_STAFF              @map("Voyage Ref Staff")
+  WIPER                      @map("Wiper")
+}
+
+/// Define allowed vessel types
+enum VesselType {
+  ACCOMMODATION
+  AHT
+  AHTS
+  AHTS_DP_I
+  AHTS_DP_II
+  AHTS_DP_III
+  BARGE
+  BITUMEN_TANKER
+  BULK_CARRIER
+  BUNKER_TANKER
+  CAPE_BULK
+  CAR_CARRIER
+  CELLULAR_CONTAINER
+  CEMENT_CARRIER
+  CHEMICAL_TANKER
+  COASTAL_VESSEL
+  CONTAINER
+  CONTAINER_VESSEL
+  CRUDE_OIL_TANKER
+  CRUISE_SHIP
+  DEMOLITION_VESSEL
+  DP
+  DP_I
+  DP_II
+  DP_III
+  DPII_ROV
+  DREDGER
+  DRILL_SHIP
+  DRILL_SHIP_DP_I
+  DRILL_SHIP_DP_II
+  DRILL_SHIP_DP_III
+  DRILLING_RIG
+  DRY_CARGO
+  DRY_CARGO_VESSEL
+  DSV
+  DSV_DP_I
+  DSV_DP_II
+  DSV_DP_III
+  FFSV
+  FISHING_VESSEL
+  FPSO
+  FSO
+  GEAR_BULK
+  GENERAL_CARGO
+  GTV
+  HEAVY_LIFT
+  HOPPER_BARGE
+  JACK_UP_BARGE
+  JACK_UP_RIG
+  LEGC_ETHYLENE_CARRIERS
+  LIVESTOCK_CARRIER
+  LNG_CARRIER
+  LPG_CARRIER
+  LUXURY_YACHT
+  MINI_BULK_CARRIER
+  MLP
+  MR_TANKER
+  MSV
+  MSV_DP_I
+  MSV_DP_II
+  MSV_DP_III
+  MULTI_PURPOSE
+  OBO
+  OFFSHORE_RESEARCH_VESSEL
+  OFFSHORE_SUPPLY
+  OFFSHORE_SUPPLY_VESSEL
+  OIL_CHEM_TANKER
+  OIL_TANKER
+  OSV
+  OSV_DP_I
+  OSV_DP_II
+  OSV_DP_III
+  PASSENGER_CRUISE_VESSEL
+  PASSENGER_SHIP
+  PIPELAYING_VESSEL
+  PRODUCT_TANKER
+  PSV
+  PSV_DP_I
+  PSV_DP_II
+  PSV_DP_III
+  PURE_CAR_TRUCK_CARRIER
+  REEFER
+  REEFER_CONTAINER
+  REEFER_CONTAINER_VESSEL
+  REEFER_VESSEL
+  RIG
+  RO_RO_VESSEL
+  ROPAX_VESSEL
+  RORO_PASSENGER
+  SAND_BARGE
+  SELF_UNLOADER_BULK_VESSEL
+  SP_SURVEY_VESSEL
+  SUPPLY_UTILITY_VESSEL
+  TNC
+  TRANSHIPPER
+  TUG
+  ULCC
+  VLCC
+  VLEC
+  VLGC
+  VLOC
+  WAR_SHIP
+  WOOD_LOG_CARRIER
+}
+
+/// Define allowed engine make
+enum EngineMake {
+  ABB_STROMBERG
+  AKASAKA
+  BW_6GFVT2BF
+  BW_6560MC
+  BW_6S70MC_C
+  BW_GFCA
+  BW_KEF
+  BW_KGF
+  BW_LMC
+  BW_MC
+  BW_MC_C
+  BW_ME_B
+  BW_ME_C
+  BW_SMC
+  BW_ST_X
+  BERGEN
+  BMZ_MAN_BW_7S50MC_C
+  CATERPILLAR
+  CUMMINS_KTA50
+  DAIHATSU
+  DALIAN_SULZER
+  DEUTZ
+  DIESEL
+  DMD_SULZER
+  GN8320ZC4B
+  HITACHI
+  HYUNDAI_MAN_BW_7_S_60_MC_C_MK_7
+  Hyundai_MAN_BW_7S60MC_Mk_6
+  JAPAN_ENGINE
+  KAWASAKI_MAN_BW
+  KAWASAKI_HEAVY
+  KOBE_DIESEL
+  KRUPP_MAK
+  MAK
+  MAN
+  MAN_6G50ME_B9_3
+  MAN_BW
+  MAN_BW_5S70MC
+  MAN_BW_6S50MC_C
+  MAN_BW_6S60MC_C
+  MAN_BW_6S90MC
+  MAN_BW_7S60_MC
+  MAN_BW_7S60MC_C
+  MAN_BW_L32_40_MAN_BW_DIESEL_8L32_40
+  MITSUBISHI
+  MITSUBISHI_AKASAKA
+  MITSUBISHI_AKASAKA_DIESEL
+  MITSUBISHI_HEAVY
+  MITSUBISHI_UEC
+  MITSUI_MAN_BW
+  MWM
+  NIIGATA
+  NIPPATSU
+  PIELSTICK
+  STORK_WERKSPOR_DIESEL
+  SULZER
+  SULZER_RD
+  SULZER_RLB
+  SULZER_RND
+  SULZER_RT_FLEX
+  SULZER_RTA
+  WARTSILLA
+  WARTSILLA_DIESEL_BV
+  YANMAR
+}
+
+/// Define allowed tonnage units
+enum TonnageUnit {
+  BHP
+  CEUs
+  DWT
+  GRT
+  KW
+  LIMS
+  M3
+  TEUs
+}
+
+/// Types of documents we store
+enum DocumentType {
+  PASSPORT
+  VISA
+  CERTIFICATE
+  CONTRACT
+  OTHER
+}
+
+/// Categories for consultancy partners
+enum ConsultancyCategory {
+  MARINE
+  LEGAL
+  AUDIT
+  TRAINING
+  MEDICAL
+}
+
+/// Types of certificates we store
+enum CertificateType {
+  AFF                       @map("Advanced Fire Fighting")
+  ARPA                      @map("Automatic Radar Plotting Aids")
+  BTM                       @map("Bridge Team Management")
+  BTM_BRM                   @map("Bridge Team / Resource Management")
+  ECDIS_GENERIC             @map("ECDIS - Generic")
+  TYPE_SPECIFIC_ECDIS       @map("ECDIS - Type Specific")
+  EFA                       @map("Elementary First Aid")
+  ERM                       @map("Engine Room Resource Management")
+  FPFF                      @map("Fire Prevention and Fire Fighting")
+  HIGH_VOLTAGE              @map("High Voltage Course")
+  INCIDENT_INVESTIGATION    @map("Incident Investigation & Risk Assessment")
+  MEDICAL_CARE              @map("Medical Care")
+  ME_ENGINE_FAMILIARIZATION @map("ME Engine Familiarization")
+  MFA                       @map("Medical First Aid")
+  OIL_CHEM_GAS_ADV          @map("Oil/Chemical/Gas Course - Advanced Tanker Course")
+  OIL_CHEM_GAS_DCE          @map("Oil/Chemical/Gas DCE - Advanced Tanker Endorsement")
+  PSCRB                     @map("Proficiency in Survival Craft and Rescue Boats")
+  PSSR                      @map("Personal Safety and Social Responsibility")
+  PST                       @map("Personal Survival Techniques")
+  RANSCO                    @map("Radar, ARPA & Navigation Simulator")
+  SAFETY_OFFICER            @map("Safety Officer Course")
+  SDSD                      @map("Security Training for Seafarers with Designated Duties")
+  SHIP_HANDLING_SIM         @map("Ship Handling Simulator Course")
+  CARGO_HANDLING_SIM        @map("Cargo Handling Simulator Course")
+  SSO                       @map("Ship Security Officer")
+  GMDSS                     @map("General/Restricted Operator’s Certificate")
+  IGF_CODE_TRAINING         @map("IGF Code Training")
+  ISM_ISPS_MLC              @map("Internal Auditor")
+  CROWD_MANAGEMENT          @map("Crowd Management")
+  COMPRESSOR_BOILER_SAFETY  @map("Compressor & Boiler Safety Certification")
+  CRISIS_MANAGEMENT         @map("Crisis Management")
+  BALLAST_WATER_MGMT        @map("Ballast Water Management")
+  ENV_AWARENESS             @map("Environmental Awareness")
+  POLAR_CODE                @map("Polar Code Awareness")
+  CYBER_SECURITY            @map("Cyber Security Awareness")
+  HELM_OPS                  @map("HELM – Operational Level")
+  HELM_MGMT                 @map("HELM – Management Level")
+  MARPOL_AWARENESS          @map("MARPOL Awareness")
+  REFRIG_REEFER_HADNLING    @map("Refrigeration")
+  TANK_CLEANING             @map("Tank Cleaning & Gas Freeing")
+  MLC_FAMILIARIZATION       @map("Maritime Labour Convention Familiarization")
+}
+
+/// Internal vs. external training classification
+enum TrainingType {
+  INTERNAL
+  EXTERNAL
+}
+
+/// Define vessel departments
+enum VesselDepartment {
+  DECK
+  ENGINE
+  CATERING
+}
+
+/// Define crew statuses
+enum CrewStatus {
+  ACTIVE
+  INACTIVE
+  ON_LEAVE
+}
+
+/// Define vessel user roles
+enum VesselUserRole { VESSEL_ADMIN }
