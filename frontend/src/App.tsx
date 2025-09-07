@@ -20,6 +20,7 @@ import { VesselCreate } from "./pages/vessels/create";
 import { VesselEdit } from "./pages/vessels/edit";
 
 import { App as AntdApp } from "antd";
+import { useEffect } from "react";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
@@ -37,105 +38,138 @@ import { CrewList } from "./pages/crew/list";
 import { CrewCreate } from "./pages/crew/create";
 import { CrewEdit } from "./pages/crew/edit";
 import { CrewShow } from "./pages/crew/show";
+import ErrorBoundary from "./components/ErrorBoundary";
+import {
+  setupGlobalErrorHandling,
+  enhanceConsoleLogging,
+  setNotificationApi
+} from "./utils/errorHandler";
+
+// Setup global error handling
+setupGlobalErrorHandling();
+enhanceConsoleLogging();
+
+// Component to setup notification API
+const NotificationSetup: React.FC = () => {
+  const { notification } = AntdApp.useApp();
+
+  useEffect(() => {
+    setNotificationApi(notification);
+  }, [notification]);
+
+  return null;
+};
 
 function App() {
   return (
-    <BrowserRouter>
-      <RefineKbarProvider>
-        <ColorModeContextProvider>
-          <AntdApp>
-            <DevtoolsProvider>
-              <Refine
-                dataProvider={dataProvider}
-                authProvider={authProvider}
-                routerProvider={routerBindings}
-                notificationProvider={useNotificationProvider}
-                resources={[
-                  {
-                    name: "users",
-                    list: "/users",
-                    meta: {
-                      label: "Users",
-                      title: "User Management"
+    <ErrorBoundary>
+      <BrowserRouter>
+        <RefineKbarProvider>
+          <ColorModeContextProvider>
+            <AntdApp>
+              <NotificationSetup />
+              <DevtoolsProvider>
+                <Refine
+                  dataProvider={dataProvider}
+                  authProvider={authProvider}
+                  routerProvider={routerBindings}
+                  notificationProvider={useNotificationProvider}
+                  resources={[
+                    {
+                      name: "users",
+                      list: "/users",
+                      meta: {
+                        label: "Users",
+                        title: "User Management"
+                      },
+                      create: "/users/create",
+                      edit: "/users/:id/edit"
                     },
-                    create: "/users/create",
-                    edit: "/users/:id/edit"
-                  },
-                  {
-                    name: "vessels",
-                    list: "/vessels",
-                    meta: {
-                      label: "Vessels",
-                      title: "Vessel Management"
+                    {
+                      name: "vessels",
+                      list: "/vessels",
+                      meta: {
+                        label: "Vessels",
+                        title: "Vessel Management"
+                      },
+                      create: "/vessels/create",
+                      edit: "/vessels/:id/edit",
+                      show: "/vessels/show/:id"
                     },
-                    create: "/vessels/create",
-                    edit: "/vessels/:id/edit",
-                    show: "/vessels/show/:id"
-                  },
-                  {
-                    name: "crew",
-                    list: "/crew",
-                    meta: {
-                      label: "Crew",
-                      title: "Crew Management"
-                    },
-                    create: "/crew/create",
-                    edit: "/crew/:id/edit",
-                    show: "/crew/show/:id"
-                  }
-                ]}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                  projectId: "8ZpMFE-ydpHF1-tNpE3T"
-                }}
-              >
-                <Routes>
-                  <Route
-                    element={
-                      <Authenticated
-                        key="main-layout"
-                        fallback={<CatchAllNavigate to="/login" />}
-                      >
-                        <ThemedLayout
-                          Header={Header}
-                          Sider={(props) => <ThemedSider {...props} fixed />}
-                        >
-                          <Outlet />
-                        </ThemedLayout>
-                      </Authenticated>
+                    {
+                      name: "crew",
+                      list: "/crew",
+                      meta: {
+                        label: "Crew",
+                        title: "Crew Management"
+                      },
+                      create: "/crew/create",
+                      edit: "/crew/:id/edit",
+                      show: "/crew/show/:id"
                     }
-                  >
-                    <Route index element={<NavigateToResource />} />
-                    <Route path="/users" element={<UserList />} />
-                    <Route path="/users/create" element={<UserCreate />} />
-                    <Route path="/users/:id/edit" element={<UserEdit />} />
-                    <Route path="/vessels" element={<VesselList />} />
-                    <Route path="/vessels/create" element={<VesselCreate />} />
-                    <Route path="/vessels/:id/edit" element={<VesselEdit />} />
-                    <Route path="/vessels/show/:id" element={<VesselShow />} />
-                    <Route path="/crew" element={<CrewList />} />
-                    <Route path="/crew/create" element={<CrewCreate />} />
-                    <Route path="/crew/:id/edit" element={<CrewEdit />} />
-                    <Route path="/crew/show/:id" element={<CrewShow />} />
-                    {/* Add your resource routes here */}
-                    <Route path="*" element={<ErrorComponent />} />
-                  </Route>
+                  ]}
+                  options={{
+                    syncWithLocation: true,
+                    warnWhenUnsavedChanges: true,
+                    projectId: "8ZpMFE-ydpHF1-tNpE3T"
+                  }}
+                >
+                  <Routes>
+                    <Route
+                      element={
+                        <Authenticated
+                          key="main-layout"
+                          fallback={<CatchAllNavigate to="/login" />}
+                        >
+                          <ThemedLayout
+                            Header={Header}
+                            Sider={(props) => <ThemedSider {...props} fixed />}
+                          >
+                            <Outlet />
+                          </ThemedLayout>
+                        </Authenticated>
+                      }
+                    >
+                      <Route index element={<NavigateToResource />} />
+                      <Route path="/users" element={<UserList />} />
+                      <Route path="/users/create" element={<UserCreate />} />
+                      <Route path="/users/:id/edit" element={<UserEdit />} />
+                      <Route path="/vessels" element={<VesselList />} />
+                      <Route
+                        path="/vessels/create"
+                        element={<VesselCreate />}
+                      />
+                      <Route
+                        path="/vessels/:id/edit"
+                        element={<VesselEdit />}
+                      />
+                      <Route
+                        path="/vessels/show/:id"
+                        element={<VesselShow />}
+                      />
+                      <Route path="/crew" element={<CrewList />} />
+                      <Route path="/crew/create" element={<CrewCreate />} />
+                      <Route path="/crew/:id/edit" element={<CrewEdit />} />
+                      <Route path="/crew/show/:id" element={<CrewShow />} />
+                      {/* Add your resource routes here */}
+                      <Route path="*" element={<ErrorComponent />} />
+                    </Route>
 
-                  <Route path="/login" element={<LoginPage />} />
-                </Routes>
+                    <Route path="/login" element={<LoginPage />} />
+                  </Routes>
 
-                <RefineKbar />
-                <UnsavedChangesNotifier />
-                <DocumentTitleHandler />
-              </Refine>
+                  <RefineKbar />
+                  <UnsavedChangesNotifier />
+                  <DocumentTitleHandler />
+                </Refine>
 
-              <DevtoolsPanel />
-            </DevtoolsProvider>
-          </AntdApp>
-        </ColorModeContextProvider>
-      </RefineKbarProvider>
-    </BrowserRouter>
+                <DevtoolsPanel />
+              </DevtoolsProvider>
+            </AntdApp>
+          </ColorModeContextProvider>
+        </RefineKbarProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

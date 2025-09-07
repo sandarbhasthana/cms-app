@@ -34,6 +34,11 @@ export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
  */
 export type Crew = $Result.DefaultSelection<Prisma.$CrewPayload>
 /**
+ * Model CrewOnboardingDraft
+ * New model for onboarding draft
+ */
+export type CrewOnboardingDraft = $Result.DefaultSelection<Prisma.$CrewOnboardingDraftPayload>
+/**
  * Model Vessel
  * Vessels that the company owns and uses
  */
@@ -499,6 +504,14 @@ export const VesselUserRole: {
 
 export type VesselUserRole = (typeof VesselUserRole)[keyof typeof VesselUserRole]
 
+
+export const DraftStatus: {
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
+};
+
+export type DraftStatus = (typeof DraftStatus)[keyof typeof DraftStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -548,6 +561,10 @@ export const CrewStatus: typeof $Enums.CrewStatus
 export type VesselUserRole = $Enums.VesselUserRole
 
 export const VesselUserRole: typeof $Enums.VesselUserRole
+
+export type DraftStatus = $Enums.DraftStatus
+
+export const DraftStatus: typeof $Enums.DraftStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -713,6 +730,16 @@ export class PrismaClient<
     * ```
     */
   get crew(): Prisma.CrewDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.crewOnboardingDraft`: Exposes CRUD operations for the **CrewOnboardingDraft** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CrewOnboardingDrafts
+    * const crewOnboardingDrafts = await prisma.crewOnboardingDraft.findMany()
+    * ```
+    */
+  get crewOnboardingDraft(): Prisma.CrewOnboardingDraftDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.vessel`: Exposes CRUD operations for the **Vessel** model.
@@ -1247,6 +1274,7 @@ export namespace Prisma {
     User: 'User',
     AuditLog: 'AuditLog',
     Crew: 'Crew',
+    CrewOnboardingDraft: 'CrewOnboardingDraft',
     Vessel: 'Vessel',
     VesselUserRoleMap: 'VesselUserRoleMap',
     VesselRankRequirement: 'VesselRankRequirement',
@@ -1274,7 +1302,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "organization" | "user" | "auditLog" | "crew" | "vessel" | "vesselUserRoleMap" | "vesselRankRequirement" | "document" | "vesselAssignment" | "consultancyPartner" | "trainingPartner" | "course" | "trainingRecord"
+      modelProps: "organization" | "user" | "auditLog" | "crew" | "crewOnboardingDraft" | "vessel" | "vesselUserRoleMap" | "vesselRankRequirement" | "document" | "vesselAssignment" | "consultancyPartner" | "trainingPartner" | "course" | "trainingRecord"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1571,6 +1599,80 @@ export namespace Prisma {
           count: {
             args: Prisma.CrewCountArgs<ExtArgs>
             result: $Utils.Optional<CrewCountAggregateOutputType> | number
+          }
+        }
+      }
+      CrewOnboardingDraft: {
+        payload: Prisma.$CrewOnboardingDraftPayload<ExtArgs>
+        fields: Prisma.CrewOnboardingDraftFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CrewOnboardingDraftFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CrewOnboardingDraftFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>
+          }
+          findFirst: {
+            args: Prisma.CrewOnboardingDraftFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CrewOnboardingDraftFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>
+          }
+          findMany: {
+            args: Prisma.CrewOnboardingDraftFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>[]
+          }
+          create: {
+            args: Prisma.CrewOnboardingDraftCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>
+          }
+          createMany: {
+            args: Prisma.CrewOnboardingDraftCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CrewOnboardingDraftCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>[]
+          }
+          delete: {
+            args: Prisma.CrewOnboardingDraftDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>
+          }
+          update: {
+            args: Prisma.CrewOnboardingDraftUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>
+          }
+          deleteMany: {
+            args: Prisma.CrewOnboardingDraftDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CrewOnboardingDraftUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CrewOnboardingDraftUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>[]
+          }
+          upsert: {
+            args: Prisma.CrewOnboardingDraftUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrewOnboardingDraftPayload>
+          }
+          aggregate: {
+            args: Prisma.CrewOnboardingDraftAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCrewOnboardingDraft>
+          }
+          groupBy: {
+            args: Prisma.CrewOnboardingDraftGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CrewOnboardingDraftGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CrewOnboardingDraftCountArgs<ExtArgs>
+            result: $Utils.Optional<CrewOnboardingDraftCountAggregateOutputType> | number
           }
         }
       }
@@ -2336,6 +2438,7 @@ export namespace Prisma {
     user?: UserOmit
     auditLog?: AuditLogOmit
     crew?: CrewOmit
+    crewOnboardingDraft?: CrewOnboardingDraftOmit
     vessel?: VesselOmit
     vesselUserRoleMap?: VesselUserRoleMapOmit
     vesselRankRequirement?: VesselRankRequirementOmit
@@ -2445,6 +2548,7 @@ export namespace Prisma {
 
   export type OrganizationCountOutputType = {
     crew: number
+    crewOnboardingDraft: number
     Document: number
     TrainingRecord: number
     users: number
@@ -2456,6 +2560,7 @@ export namespace Prisma {
 
   export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     crew?: boolean | OrganizationCountOutputTypeCountCrewArgs
+    crewOnboardingDraft?: boolean | OrganizationCountOutputTypeCountCrewOnboardingDraftArgs
     Document?: boolean | OrganizationCountOutputTypeCountDocumentArgs
     TrainingRecord?: boolean | OrganizationCountOutputTypeCountTrainingRecordArgs
     users?: boolean | OrganizationCountOutputTypeCountUsersArgs
@@ -2481,6 +2586,13 @@ export namespace Prisma {
    */
   export type OrganizationCountOutputTypeCountCrewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CrewWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountCrewOnboardingDraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CrewOnboardingDraftWhereInput
   }
 
   /**
@@ -2903,6 +3015,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     crew?: boolean | Organization$crewArgs<ExtArgs>
+    crewOnboardingDraft?: boolean | Organization$crewOnboardingDraftArgs<ExtArgs>
     Document?: boolean | Organization$DocumentArgs<ExtArgs>
     TrainingRecord?: boolean | Organization$TrainingRecordArgs<ExtArgs>
     users?: boolean | Organization$usersArgs<ExtArgs>
@@ -2937,6 +3050,7 @@ export namespace Prisma {
   export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
   export type OrganizationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     crew?: boolean | Organization$crewArgs<ExtArgs>
+    crewOnboardingDraft?: boolean | Organization$crewOnboardingDraftArgs<ExtArgs>
     Document?: boolean | Organization$DocumentArgs<ExtArgs>
     TrainingRecord?: boolean | Organization$TrainingRecordArgs<ExtArgs>
     users?: boolean | Organization$usersArgs<ExtArgs>
@@ -2953,6 +3067,7 @@ export namespace Prisma {
     name: "Organization"
     objects: {
       crew: Prisma.$CrewPayload<ExtArgs>[]
+      crewOnboardingDraft: Prisma.$CrewOnboardingDraftPayload<ExtArgs>[]
       Document: Prisma.$DocumentPayload<ExtArgs>[]
       TrainingRecord: Prisma.$TrainingRecordPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
@@ -3361,6 +3476,7 @@ export namespace Prisma {
   export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     crew<T extends Organization$crewArgs<ExtArgs> = {}>(args?: Subset<T, Organization$crewArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    crewOnboardingDraft<T extends Organization$crewOnboardingDraftArgs<ExtArgs> = {}>(args?: Subset<T, Organization$crewOnboardingDraftArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Document<T extends Organization$DocumentArgs<ExtArgs> = {}>(args?: Subset<T, Organization$DocumentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     TrainingRecord<T extends Organization$TrainingRecordArgs<ExtArgs> = {}>(args?: Subset<T, Organization$TrainingRecordArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends Organization$usersArgs<ExtArgs> = {}>(args?: Subset<T, Organization$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3810,6 +3926,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CrewScalarFieldEnum | CrewScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.crewOnboardingDraft
+   */
+  export type Organization$crewOnboardingDraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    where?: CrewOnboardingDraftWhereInput
+    orderBy?: CrewOnboardingDraftOrderByWithRelationInput | CrewOnboardingDraftOrderByWithRelationInput[]
+    cursor?: CrewOnboardingDraftWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CrewOnboardingDraftScalarFieldEnum | CrewOnboardingDraftScalarFieldEnum[]
   }
 
   /**
@@ -6484,6 +6624,7 @@ export namespace Prisma {
     userId?: boolean
     rank?: boolean
     status?: boolean
+    onboardingDraft?: boolean | Crew$onboardingDraftArgs<ExtArgs>
     org?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     Document?: boolean | Crew$DocumentArgs<ExtArgs>
@@ -6543,6 +6684,7 @@ export namespace Prisma {
 
   export type CrewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgId" | "firstName" | "lastName" | "createdAt" | "updatedAt" | "dateJoined" | "dateLeft" | "primaryDepartment" | "userId" | "rank" | "status", ExtArgs["result"]["crew"]>
   export type CrewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    onboardingDraft?: boolean | Crew$onboardingDraftArgs<ExtArgs>
     org?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     Document?: boolean | Crew$DocumentArgs<ExtArgs>
@@ -6562,6 +6704,7 @@ export namespace Prisma {
   export type $CrewPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Crew"
     objects: {
+      onboardingDraft: Prisma.$CrewOnboardingDraftPayload<ExtArgs> | null
       org: Prisma.$OrganizationPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
       Document: Prisma.$DocumentPayload<ExtArgs>[]
@@ -6975,6 +7118,7 @@ export namespace Prisma {
    */
   export interface Prisma__CrewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    onboardingDraft<T extends Crew$onboardingDraftArgs<ExtArgs> = {}>(args?: Subset<T, Crew$onboardingDraftArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     org<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     Document<T extends Crew$DocumentArgs<ExtArgs> = {}>(args?: Subset<T, Crew$DocumentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7417,6 +7561,25 @@ export namespace Prisma {
   }
 
   /**
+   * Crew.onboardingDraft
+   */
+  export type Crew$onboardingDraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    where?: CrewOnboardingDraftWhereInput
+  }
+
+  /**
    * Crew.Document
    */
   export type Crew$DocumentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7504,6 +7667,1100 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: CrewInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CrewOnboardingDraft
+   */
+
+  export type AggregateCrewOnboardingDraft = {
+    _count: CrewOnboardingDraftCountAggregateOutputType | null
+    _min: CrewOnboardingDraftMinAggregateOutputType | null
+    _max: CrewOnboardingDraftMaxAggregateOutputType | null
+  }
+
+  export type CrewOnboardingDraftMinAggregateOutputType = {
+    id: string | null
+    crewId: string | null
+    status: $Enums.DraftStatus | null
+    updatedAt: Date | null
+    organizationId: string | null
+  }
+
+  export type CrewOnboardingDraftMaxAggregateOutputType = {
+    id: string | null
+    crewId: string | null
+    status: $Enums.DraftStatus | null
+    updatedAt: Date | null
+    organizationId: string | null
+  }
+
+  export type CrewOnboardingDraftCountAggregateOutputType = {
+    id: number
+    crewId: number
+    data: number
+    status: number
+    updatedAt: number
+    organizationId: number
+    _all: number
+  }
+
+
+  export type CrewOnboardingDraftMinAggregateInputType = {
+    id?: true
+    crewId?: true
+    status?: true
+    updatedAt?: true
+    organizationId?: true
+  }
+
+  export type CrewOnboardingDraftMaxAggregateInputType = {
+    id?: true
+    crewId?: true
+    status?: true
+    updatedAt?: true
+    organizationId?: true
+  }
+
+  export type CrewOnboardingDraftCountAggregateInputType = {
+    id?: true
+    crewId?: true
+    data?: true
+    status?: true
+    updatedAt?: true
+    organizationId?: true
+    _all?: true
+  }
+
+  export type CrewOnboardingDraftAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CrewOnboardingDraft to aggregate.
+     */
+    where?: CrewOnboardingDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrewOnboardingDrafts to fetch.
+     */
+    orderBy?: CrewOnboardingDraftOrderByWithRelationInput | CrewOnboardingDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CrewOnboardingDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrewOnboardingDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrewOnboardingDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CrewOnboardingDrafts
+    **/
+    _count?: true | CrewOnboardingDraftCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CrewOnboardingDraftMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CrewOnboardingDraftMaxAggregateInputType
+  }
+
+  export type GetCrewOnboardingDraftAggregateType<T extends CrewOnboardingDraftAggregateArgs> = {
+        [P in keyof T & keyof AggregateCrewOnboardingDraft]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCrewOnboardingDraft[P]>
+      : GetScalarType<T[P], AggregateCrewOnboardingDraft[P]>
+  }
+
+
+
+
+  export type CrewOnboardingDraftGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CrewOnboardingDraftWhereInput
+    orderBy?: CrewOnboardingDraftOrderByWithAggregationInput | CrewOnboardingDraftOrderByWithAggregationInput[]
+    by: CrewOnboardingDraftScalarFieldEnum[] | CrewOnboardingDraftScalarFieldEnum
+    having?: CrewOnboardingDraftScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CrewOnboardingDraftCountAggregateInputType | true
+    _min?: CrewOnboardingDraftMinAggregateInputType
+    _max?: CrewOnboardingDraftMaxAggregateInputType
+  }
+
+  export type CrewOnboardingDraftGroupByOutputType = {
+    id: string
+    crewId: string
+    data: JsonValue
+    status: $Enums.DraftStatus
+    updatedAt: Date
+    organizationId: string | null
+    _count: CrewOnboardingDraftCountAggregateOutputType | null
+    _min: CrewOnboardingDraftMinAggregateOutputType | null
+    _max: CrewOnboardingDraftMaxAggregateOutputType | null
+  }
+
+  type GetCrewOnboardingDraftGroupByPayload<T extends CrewOnboardingDraftGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CrewOnboardingDraftGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CrewOnboardingDraftGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CrewOnboardingDraftGroupByOutputType[P]>
+            : GetScalarType<T[P], CrewOnboardingDraftGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CrewOnboardingDraftSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    crewId?: boolean
+    data?: boolean
+    status?: boolean
+    updatedAt?: boolean
+    organizationId?: boolean
+    crew?: boolean | CrewDefaultArgs<ExtArgs>
+    Organization?: boolean | CrewOnboardingDraft$OrganizationArgs<ExtArgs>
+  }, ExtArgs["result"]["crewOnboardingDraft"]>
+
+  export type CrewOnboardingDraftSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    crewId?: boolean
+    data?: boolean
+    status?: boolean
+    updatedAt?: boolean
+    organizationId?: boolean
+    crew?: boolean | CrewDefaultArgs<ExtArgs>
+    Organization?: boolean | CrewOnboardingDraft$OrganizationArgs<ExtArgs>
+  }, ExtArgs["result"]["crewOnboardingDraft"]>
+
+  export type CrewOnboardingDraftSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    crewId?: boolean
+    data?: boolean
+    status?: boolean
+    updatedAt?: boolean
+    organizationId?: boolean
+    crew?: boolean | CrewDefaultArgs<ExtArgs>
+    Organization?: boolean | CrewOnboardingDraft$OrganizationArgs<ExtArgs>
+  }, ExtArgs["result"]["crewOnboardingDraft"]>
+
+  export type CrewOnboardingDraftSelectScalar = {
+    id?: boolean
+    crewId?: boolean
+    data?: boolean
+    status?: boolean
+    updatedAt?: boolean
+    organizationId?: boolean
+  }
+
+  export type CrewOnboardingDraftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "crewId" | "data" | "status" | "updatedAt" | "organizationId", ExtArgs["result"]["crewOnboardingDraft"]>
+  export type CrewOnboardingDraftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    crew?: boolean | CrewDefaultArgs<ExtArgs>
+    Organization?: boolean | CrewOnboardingDraft$OrganizationArgs<ExtArgs>
+  }
+  export type CrewOnboardingDraftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    crew?: boolean | CrewDefaultArgs<ExtArgs>
+    Organization?: boolean | CrewOnboardingDraft$OrganizationArgs<ExtArgs>
+  }
+  export type CrewOnboardingDraftIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    crew?: boolean | CrewDefaultArgs<ExtArgs>
+    Organization?: boolean | CrewOnboardingDraft$OrganizationArgs<ExtArgs>
+  }
+
+  export type $CrewOnboardingDraftPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CrewOnboardingDraft"
+    objects: {
+      crew: Prisma.$CrewPayload<ExtArgs>
+      Organization: Prisma.$OrganizationPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      crewId: string
+      data: Prisma.JsonValue
+      status: $Enums.DraftStatus
+      updatedAt: Date
+      organizationId: string | null
+    }, ExtArgs["result"]["crewOnboardingDraft"]>
+    composites: {}
+  }
+
+  type CrewOnboardingDraftGetPayload<S extends boolean | null | undefined | CrewOnboardingDraftDefaultArgs> = $Result.GetResult<Prisma.$CrewOnboardingDraftPayload, S>
+
+  type CrewOnboardingDraftCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CrewOnboardingDraftFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CrewOnboardingDraftCountAggregateInputType | true
+    }
+
+  export interface CrewOnboardingDraftDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CrewOnboardingDraft'], meta: { name: 'CrewOnboardingDraft' } }
+    /**
+     * Find zero or one CrewOnboardingDraft that matches the filter.
+     * @param {CrewOnboardingDraftFindUniqueArgs} args - Arguments to find a CrewOnboardingDraft
+     * @example
+     * // Get one CrewOnboardingDraft
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CrewOnboardingDraftFindUniqueArgs>(args: SelectSubset<T, CrewOnboardingDraftFindUniqueArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CrewOnboardingDraft that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CrewOnboardingDraftFindUniqueOrThrowArgs} args - Arguments to find a CrewOnboardingDraft
+     * @example
+     * // Get one CrewOnboardingDraft
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CrewOnboardingDraftFindUniqueOrThrowArgs>(args: SelectSubset<T, CrewOnboardingDraftFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CrewOnboardingDraft that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrewOnboardingDraftFindFirstArgs} args - Arguments to find a CrewOnboardingDraft
+     * @example
+     * // Get one CrewOnboardingDraft
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CrewOnboardingDraftFindFirstArgs>(args?: SelectSubset<T, CrewOnboardingDraftFindFirstArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CrewOnboardingDraft that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrewOnboardingDraftFindFirstOrThrowArgs} args - Arguments to find a CrewOnboardingDraft
+     * @example
+     * // Get one CrewOnboardingDraft
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CrewOnboardingDraftFindFirstOrThrowArgs>(args?: SelectSubset<T, CrewOnboardingDraftFindFirstOrThrowArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CrewOnboardingDrafts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrewOnboardingDraftFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CrewOnboardingDrafts
+     * const crewOnboardingDrafts = await prisma.crewOnboardingDraft.findMany()
+     * 
+     * // Get first 10 CrewOnboardingDrafts
+     * const crewOnboardingDrafts = await prisma.crewOnboardingDraft.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const crewOnboardingDraftWithIdOnly = await prisma.crewOnboardingDraft.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CrewOnboardingDraftFindManyArgs>(args?: SelectSubset<T, CrewOnboardingDraftFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CrewOnboardingDraft.
+     * @param {CrewOnboardingDraftCreateArgs} args - Arguments to create a CrewOnboardingDraft.
+     * @example
+     * // Create one CrewOnboardingDraft
+     * const CrewOnboardingDraft = await prisma.crewOnboardingDraft.create({
+     *   data: {
+     *     // ... data to create a CrewOnboardingDraft
+     *   }
+     * })
+     * 
+     */
+    create<T extends CrewOnboardingDraftCreateArgs>(args: SelectSubset<T, CrewOnboardingDraftCreateArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CrewOnboardingDrafts.
+     * @param {CrewOnboardingDraftCreateManyArgs} args - Arguments to create many CrewOnboardingDrafts.
+     * @example
+     * // Create many CrewOnboardingDrafts
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CrewOnboardingDraftCreateManyArgs>(args?: SelectSubset<T, CrewOnboardingDraftCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CrewOnboardingDrafts and returns the data saved in the database.
+     * @param {CrewOnboardingDraftCreateManyAndReturnArgs} args - Arguments to create many CrewOnboardingDrafts.
+     * @example
+     * // Create many CrewOnboardingDrafts
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CrewOnboardingDrafts and only return the `id`
+     * const crewOnboardingDraftWithIdOnly = await prisma.crewOnboardingDraft.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CrewOnboardingDraftCreateManyAndReturnArgs>(args?: SelectSubset<T, CrewOnboardingDraftCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CrewOnboardingDraft.
+     * @param {CrewOnboardingDraftDeleteArgs} args - Arguments to delete one CrewOnboardingDraft.
+     * @example
+     * // Delete one CrewOnboardingDraft
+     * const CrewOnboardingDraft = await prisma.crewOnboardingDraft.delete({
+     *   where: {
+     *     // ... filter to delete one CrewOnboardingDraft
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CrewOnboardingDraftDeleteArgs>(args: SelectSubset<T, CrewOnboardingDraftDeleteArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CrewOnboardingDraft.
+     * @param {CrewOnboardingDraftUpdateArgs} args - Arguments to update one CrewOnboardingDraft.
+     * @example
+     * // Update one CrewOnboardingDraft
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CrewOnboardingDraftUpdateArgs>(args: SelectSubset<T, CrewOnboardingDraftUpdateArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CrewOnboardingDrafts.
+     * @param {CrewOnboardingDraftDeleteManyArgs} args - Arguments to filter CrewOnboardingDrafts to delete.
+     * @example
+     * // Delete a few CrewOnboardingDrafts
+     * const { count } = await prisma.crewOnboardingDraft.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CrewOnboardingDraftDeleteManyArgs>(args?: SelectSubset<T, CrewOnboardingDraftDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CrewOnboardingDrafts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrewOnboardingDraftUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CrewOnboardingDrafts
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CrewOnboardingDraftUpdateManyArgs>(args: SelectSubset<T, CrewOnboardingDraftUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CrewOnboardingDrafts and returns the data updated in the database.
+     * @param {CrewOnboardingDraftUpdateManyAndReturnArgs} args - Arguments to update many CrewOnboardingDrafts.
+     * @example
+     * // Update many CrewOnboardingDrafts
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CrewOnboardingDrafts and only return the `id`
+     * const crewOnboardingDraftWithIdOnly = await prisma.crewOnboardingDraft.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CrewOnboardingDraftUpdateManyAndReturnArgs>(args: SelectSubset<T, CrewOnboardingDraftUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CrewOnboardingDraft.
+     * @param {CrewOnboardingDraftUpsertArgs} args - Arguments to update or create a CrewOnboardingDraft.
+     * @example
+     * // Update or create a CrewOnboardingDraft
+     * const crewOnboardingDraft = await prisma.crewOnboardingDraft.upsert({
+     *   create: {
+     *     // ... data to create a CrewOnboardingDraft
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CrewOnboardingDraft we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CrewOnboardingDraftUpsertArgs>(args: SelectSubset<T, CrewOnboardingDraftUpsertArgs<ExtArgs>>): Prisma__CrewOnboardingDraftClient<$Result.GetResult<Prisma.$CrewOnboardingDraftPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CrewOnboardingDrafts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrewOnboardingDraftCountArgs} args - Arguments to filter CrewOnboardingDrafts to count.
+     * @example
+     * // Count the number of CrewOnboardingDrafts
+     * const count = await prisma.crewOnboardingDraft.count({
+     *   where: {
+     *     // ... the filter for the CrewOnboardingDrafts we want to count
+     *   }
+     * })
+    **/
+    count<T extends CrewOnboardingDraftCountArgs>(
+      args?: Subset<T, CrewOnboardingDraftCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CrewOnboardingDraftCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CrewOnboardingDraft.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrewOnboardingDraftAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CrewOnboardingDraftAggregateArgs>(args: Subset<T, CrewOnboardingDraftAggregateArgs>): Prisma.PrismaPromise<GetCrewOnboardingDraftAggregateType<T>>
+
+    /**
+     * Group by CrewOnboardingDraft.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrewOnboardingDraftGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CrewOnboardingDraftGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CrewOnboardingDraftGroupByArgs['orderBy'] }
+        : { orderBy?: CrewOnboardingDraftGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CrewOnboardingDraftGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCrewOnboardingDraftGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CrewOnboardingDraft model
+   */
+  readonly fields: CrewOnboardingDraftFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CrewOnboardingDraft.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CrewOnboardingDraftClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    crew<T extends CrewDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CrewDefaultArgs<ExtArgs>>): Prisma__CrewClient<$Result.GetResult<Prisma.$CrewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Organization<T extends CrewOnboardingDraft$OrganizationArgs<ExtArgs> = {}>(args?: Subset<T, CrewOnboardingDraft$OrganizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CrewOnboardingDraft model
+   */
+  interface CrewOnboardingDraftFieldRefs {
+    readonly id: FieldRef<"CrewOnboardingDraft", 'String'>
+    readonly crewId: FieldRef<"CrewOnboardingDraft", 'String'>
+    readonly data: FieldRef<"CrewOnboardingDraft", 'Json'>
+    readonly status: FieldRef<"CrewOnboardingDraft", 'DraftStatus'>
+    readonly updatedAt: FieldRef<"CrewOnboardingDraft", 'DateTime'>
+    readonly organizationId: FieldRef<"CrewOnboardingDraft", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CrewOnboardingDraft findUnique
+   */
+  export type CrewOnboardingDraftFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which CrewOnboardingDraft to fetch.
+     */
+    where: CrewOnboardingDraftWhereUniqueInput
+  }
+
+  /**
+   * CrewOnboardingDraft findUniqueOrThrow
+   */
+  export type CrewOnboardingDraftFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which CrewOnboardingDraft to fetch.
+     */
+    where: CrewOnboardingDraftWhereUniqueInput
+  }
+
+  /**
+   * CrewOnboardingDraft findFirst
+   */
+  export type CrewOnboardingDraftFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which CrewOnboardingDraft to fetch.
+     */
+    where?: CrewOnboardingDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrewOnboardingDrafts to fetch.
+     */
+    orderBy?: CrewOnboardingDraftOrderByWithRelationInput | CrewOnboardingDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CrewOnboardingDrafts.
+     */
+    cursor?: CrewOnboardingDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrewOnboardingDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrewOnboardingDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CrewOnboardingDrafts.
+     */
+    distinct?: CrewOnboardingDraftScalarFieldEnum | CrewOnboardingDraftScalarFieldEnum[]
+  }
+
+  /**
+   * CrewOnboardingDraft findFirstOrThrow
+   */
+  export type CrewOnboardingDraftFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which CrewOnboardingDraft to fetch.
+     */
+    where?: CrewOnboardingDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrewOnboardingDrafts to fetch.
+     */
+    orderBy?: CrewOnboardingDraftOrderByWithRelationInput | CrewOnboardingDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CrewOnboardingDrafts.
+     */
+    cursor?: CrewOnboardingDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrewOnboardingDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrewOnboardingDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CrewOnboardingDrafts.
+     */
+    distinct?: CrewOnboardingDraftScalarFieldEnum | CrewOnboardingDraftScalarFieldEnum[]
+  }
+
+  /**
+   * CrewOnboardingDraft findMany
+   */
+  export type CrewOnboardingDraftFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which CrewOnboardingDrafts to fetch.
+     */
+    where?: CrewOnboardingDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrewOnboardingDrafts to fetch.
+     */
+    orderBy?: CrewOnboardingDraftOrderByWithRelationInput | CrewOnboardingDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CrewOnboardingDrafts.
+     */
+    cursor?: CrewOnboardingDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrewOnboardingDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrewOnboardingDrafts.
+     */
+    skip?: number
+    distinct?: CrewOnboardingDraftScalarFieldEnum | CrewOnboardingDraftScalarFieldEnum[]
+  }
+
+  /**
+   * CrewOnboardingDraft create
+   */
+  export type CrewOnboardingDraftCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CrewOnboardingDraft.
+     */
+    data: XOR<CrewOnboardingDraftCreateInput, CrewOnboardingDraftUncheckedCreateInput>
+  }
+
+  /**
+   * CrewOnboardingDraft createMany
+   */
+  export type CrewOnboardingDraftCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CrewOnboardingDrafts.
+     */
+    data: CrewOnboardingDraftCreateManyInput | CrewOnboardingDraftCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CrewOnboardingDraft createManyAndReturn
+   */
+  export type CrewOnboardingDraftCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * The data used to create many CrewOnboardingDrafts.
+     */
+    data: CrewOnboardingDraftCreateManyInput | CrewOnboardingDraftCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CrewOnboardingDraft update
+   */
+  export type CrewOnboardingDraftUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CrewOnboardingDraft.
+     */
+    data: XOR<CrewOnboardingDraftUpdateInput, CrewOnboardingDraftUncheckedUpdateInput>
+    /**
+     * Choose, which CrewOnboardingDraft to update.
+     */
+    where: CrewOnboardingDraftWhereUniqueInput
+  }
+
+  /**
+   * CrewOnboardingDraft updateMany
+   */
+  export type CrewOnboardingDraftUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CrewOnboardingDrafts.
+     */
+    data: XOR<CrewOnboardingDraftUpdateManyMutationInput, CrewOnboardingDraftUncheckedUpdateManyInput>
+    /**
+     * Filter which CrewOnboardingDrafts to update
+     */
+    where?: CrewOnboardingDraftWhereInput
+    /**
+     * Limit how many CrewOnboardingDrafts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CrewOnboardingDraft updateManyAndReturn
+   */
+  export type CrewOnboardingDraftUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * The data used to update CrewOnboardingDrafts.
+     */
+    data: XOR<CrewOnboardingDraftUpdateManyMutationInput, CrewOnboardingDraftUncheckedUpdateManyInput>
+    /**
+     * Filter which CrewOnboardingDrafts to update
+     */
+    where?: CrewOnboardingDraftWhereInput
+    /**
+     * Limit how many CrewOnboardingDrafts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CrewOnboardingDraft upsert
+   */
+  export type CrewOnboardingDraftUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CrewOnboardingDraft to update in case it exists.
+     */
+    where: CrewOnboardingDraftWhereUniqueInput
+    /**
+     * In case the CrewOnboardingDraft found by the `where` argument doesn't exist, create a new CrewOnboardingDraft with this data.
+     */
+    create: XOR<CrewOnboardingDraftCreateInput, CrewOnboardingDraftUncheckedCreateInput>
+    /**
+     * In case the CrewOnboardingDraft was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CrewOnboardingDraftUpdateInput, CrewOnboardingDraftUncheckedUpdateInput>
+  }
+
+  /**
+   * CrewOnboardingDraft delete
+   */
+  export type CrewOnboardingDraftDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
+    /**
+     * Filter which CrewOnboardingDraft to delete.
+     */
+    where: CrewOnboardingDraftWhereUniqueInput
+  }
+
+  /**
+   * CrewOnboardingDraft deleteMany
+   */
+  export type CrewOnboardingDraftDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CrewOnboardingDrafts to delete
+     */
+    where?: CrewOnboardingDraftWhereInput
+    /**
+     * Limit how many CrewOnboardingDrafts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CrewOnboardingDraft.Organization
+   */
+  export type CrewOnboardingDraft$OrganizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+  }
+
+  /**
+   * CrewOnboardingDraft without action
+   */
+  export type CrewOnboardingDraftDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrewOnboardingDraft
+     */
+    select?: CrewOnboardingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrewOnboardingDraft
+     */
+    omit?: CrewOnboardingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrewOnboardingDraftInclude<ExtArgs> | null
   }
 
 
@@ -17804,6 +19061,18 @@ export namespace Prisma {
   export type CrewScalarFieldEnum = (typeof CrewScalarFieldEnum)[keyof typeof CrewScalarFieldEnum]
 
 
+  export const CrewOnboardingDraftScalarFieldEnum: {
+    id: 'id',
+    crewId: 'crewId',
+    data: 'data',
+    status: 'status',
+    updatedAt: 'updatedAt',
+    organizationId: 'organizationId'
+  };
+
+  export type CrewOnboardingDraftScalarFieldEnum = (typeof CrewOnboardingDraftScalarFieldEnum)[keyof typeof CrewOnboardingDraftScalarFieldEnum]
+
+
   export const VesselScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -17955,6 +19224,13 @@ export namespace Prisma {
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -18080,6 +19356,20 @@ export namespace Prisma {
    * Reference to a field of type 'CrewStatus[]'
    */
   export type ListEnumCrewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrewStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DraftStatus'
+   */
+  export type EnumDraftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DraftStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DraftStatus[]'
+   */
+  export type ListEnumDraftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DraftStatus[]'>
     
 
 
@@ -18228,6 +19518,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Organization"> | Date | string
     updatedAt?: DateTimeFilter<"Organization"> | Date | string
     crew?: CrewListRelationFilter
+    crewOnboardingDraft?: CrewOnboardingDraftListRelationFilter
     Document?: DocumentListRelationFilter
     TrainingRecord?: TrainingRecordListRelationFilter
     users?: UserListRelationFilter
@@ -18243,6 +19534,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     crew?: CrewOrderByRelationAggregateInput
+    crewOnboardingDraft?: CrewOnboardingDraftOrderByRelationAggregateInput
     Document?: DocumentOrderByRelationAggregateInput
     TrainingRecord?: TrainingRecordOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
@@ -18261,6 +19553,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Organization"> | Date | string
     updatedAt?: DateTimeFilter<"Organization"> | Date | string
     crew?: CrewListRelationFilter
+    crewOnboardingDraft?: CrewOnboardingDraftListRelationFilter
     Document?: DocumentListRelationFilter
     TrainingRecord?: TrainingRecordListRelationFilter
     users?: UserListRelationFilter
@@ -18468,6 +19761,7 @@ export namespace Prisma {
     userId?: StringFilter<"Crew"> | string
     rank?: EnumVesselRoleFilter<"Crew"> | $Enums.VesselRole
     status?: EnumCrewStatusFilter<"Crew"> | $Enums.CrewStatus
+    onboardingDraft?: XOR<CrewOnboardingDraftNullableScalarRelationFilter, CrewOnboardingDraftWhereInput> | null
     org?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     Document?: DocumentListRelationFilter
@@ -18488,6 +19782,7 @@ export namespace Prisma {
     userId?: SortOrder
     rank?: SortOrder
     status?: SortOrder
+    onboardingDraft?: CrewOnboardingDraftOrderByWithRelationInput
     org?: OrganizationOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     Document?: DocumentOrderByRelationAggregateInput
@@ -18512,6 +19807,7 @@ export namespace Prisma {
     primaryDepartment?: EnumVesselDepartmentFilter<"Crew"> | $Enums.VesselDepartment
     rank?: EnumVesselRoleFilter<"Crew"> | $Enums.VesselRole
     status?: EnumCrewStatusFilter<"Crew"> | $Enums.CrewStatus
+    onboardingDraft?: XOR<CrewOnboardingDraftNullableScalarRelationFilter, CrewOnboardingDraftWhereInput> | null
     org?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     Document?: DocumentListRelationFilter
@@ -18553,6 +19849,69 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Crew"> | string
     rank?: EnumVesselRoleWithAggregatesFilter<"Crew"> | $Enums.VesselRole
     status?: EnumCrewStatusWithAggregatesFilter<"Crew"> | $Enums.CrewStatus
+  }
+
+  export type CrewOnboardingDraftWhereInput = {
+    AND?: CrewOnboardingDraftWhereInput | CrewOnboardingDraftWhereInput[]
+    OR?: CrewOnboardingDraftWhereInput[]
+    NOT?: CrewOnboardingDraftWhereInput | CrewOnboardingDraftWhereInput[]
+    id?: StringFilter<"CrewOnboardingDraft"> | string
+    crewId?: StringFilter<"CrewOnboardingDraft"> | string
+    data?: JsonFilter<"CrewOnboardingDraft">
+    status?: EnumDraftStatusFilter<"CrewOnboardingDraft"> | $Enums.DraftStatus
+    updatedAt?: DateTimeFilter<"CrewOnboardingDraft"> | Date | string
+    organizationId?: StringNullableFilter<"CrewOnboardingDraft"> | string | null
+    crew?: XOR<CrewScalarRelationFilter, CrewWhereInput>
+    Organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+  }
+
+  export type CrewOnboardingDraftOrderByWithRelationInput = {
+    id?: SortOrder
+    crewId?: SortOrder
+    data?: SortOrder
+    status?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrderInput | SortOrder
+    crew?: CrewOrderByWithRelationInput
+    Organization?: OrganizationOrderByWithRelationInput
+  }
+
+  export type CrewOnboardingDraftWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    crewId?: string
+    AND?: CrewOnboardingDraftWhereInput | CrewOnboardingDraftWhereInput[]
+    OR?: CrewOnboardingDraftWhereInput[]
+    NOT?: CrewOnboardingDraftWhereInput | CrewOnboardingDraftWhereInput[]
+    data?: JsonFilter<"CrewOnboardingDraft">
+    status?: EnumDraftStatusFilter<"CrewOnboardingDraft"> | $Enums.DraftStatus
+    updatedAt?: DateTimeFilter<"CrewOnboardingDraft"> | Date | string
+    organizationId?: StringNullableFilter<"CrewOnboardingDraft"> | string | null
+    crew?: XOR<CrewScalarRelationFilter, CrewWhereInput>
+    Organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+  }, "id" | "crewId">
+
+  export type CrewOnboardingDraftOrderByWithAggregationInput = {
+    id?: SortOrder
+    crewId?: SortOrder
+    data?: SortOrder
+    status?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrderInput | SortOrder
+    _count?: CrewOnboardingDraftCountOrderByAggregateInput
+    _max?: CrewOnboardingDraftMaxOrderByAggregateInput
+    _min?: CrewOnboardingDraftMinOrderByAggregateInput
+  }
+
+  export type CrewOnboardingDraftScalarWhereWithAggregatesInput = {
+    AND?: CrewOnboardingDraftScalarWhereWithAggregatesInput | CrewOnboardingDraftScalarWhereWithAggregatesInput[]
+    OR?: CrewOnboardingDraftScalarWhereWithAggregatesInput[]
+    NOT?: CrewOnboardingDraftScalarWhereWithAggregatesInput | CrewOnboardingDraftScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CrewOnboardingDraft"> | string
+    crewId?: StringWithAggregatesFilter<"CrewOnboardingDraft"> | string
+    data?: JsonWithAggregatesFilter<"CrewOnboardingDraft">
+    status?: EnumDraftStatusWithAggregatesFilter<"CrewOnboardingDraft"> | $Enums.DraftStatus
+    updatedAt?: DateTimeWithAggregatesFilter<"CrewOnboardingDraft"> | Date | string
+    organizationId?: StringNullableWithAggregatesFilter<"CrewOnboardingDraft"> | string | null
   }
 
   export type VesselWhereInput = {
@@ -19277,6 +20636,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     Document?: DocumentCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
     users?: UserCreateNestedManyWithoutOrgInput
@@ -19292,6 +20652,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
     users?: UserUncheckedCreateNestedManyWithoutOrgInput
@@ -19307,6 +20668,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
     users?: UserUpdateManyWithoutOrgNestedInput
@@ -19322,6 +20684,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
     users?: UserUncheckedUpdateManyWithoutOrgNestedInput
@@ -19537,6 +20900,7 @@ export namespace Prisma {
     primaryDepartment: $Enums.VesselDepartment
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftCreateNestedOneWithoutCrewInput
     org: OrganizationCreateNestedOneWithoutCrewInput
     user: UserCreateNestedOneWithoutCrewInput
     Document?: DocumentCreateNestedManyWithoutCrewInput
@@ -19557,6 +20921,7 @@ export namespace Prisma {
     userId: string
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedOneWithoutCrewInput
     Document?: DocumentUncheckedCreateNestedManyWithoutCrewInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutCrewInput
     VesselAssignment?: VesselAssignmentUncheckedCreateNestedManyWithoutCrewInput
@@ -19573,6 +20938,7 @@ export namespace Prisma {
     primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUpdateOneWithoutCrewNestedInput
     org?: OrganizationUpdateOneRequiredWithoutCrewNestedInput
     user?: UserUpdateOneRequiredWithoutCrewNestedInput
     Document?: DocumentUpdateManyWithoutCrewNestedInput
@@ -19593,6 +20959,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedUpdateOneWithoutCrewNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutCrewNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutCrewNestedInput
     VesselAssignment?: VesselAssignmentUncheckedUpdateManyWithoutCrewNestedInput
@@ -19639,6 +21006,67 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+  }
+
+  export type CrewOnboardingDraftCreateInput = {
+    id?: string
+    data: JsonNullValueInput | InputJsonValue
+    status?: $Enums.DraftStatus
+    updatedAt?: Date | string
+    crew: CrewCreateNestedOneWithoutOnboardingDraftInput
+    Organization?: OrganizationCreateNestedOneWithoutCrewOnboardingDraftInput
+  }
+
+  export type CrewOnboardingDraftUncheckedCreateInput = {
+    id?: string
+    crewId: string
+    data: JsonNullValueInput | InputJsonValue
+    status?: $Enums.DraftStatus
+    updatedAt?: Date | string
+    organizationId?: string | null
+  }
+
+  export type CrewOnboardingDraftUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    crew?: CrewUpdateOneRequiredWithoutOnboardingDraftNestedInput
+    Organization?: OrganizationUpdateOneWithoutCrewOnboardingDraftNestedInput
+  }
+
+  export type CrewOnboardingDraftUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    crewId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CrewOnboardingDraftCreateManyInput = {
+    id?: string
+    crewId: string
+    data: JsonNullValueInput | InputJsonValue
+    status?: $Enums.DraftStatus
+    updatedAt?: Date | string
+    organizationId?: string | null
+  }
+
+  export type CrewOnboardingDraftUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrewOnboardingDraftUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    crewId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VesselCreateInput = {
@@ -20434,6 +21862,12 @@ export namespace Prisma {
     none?: CrewWhereInput
   }
 
+  export type CrewOnboardingDraftListRelationFilter = {
+    every?: CrewOnboardingDraftWhereInput
+    some?: CrewOnboardingDraftWhereInput
+    none?: CrewOnboardingDraftWhereInput
+  }
+
   export type DocumentListRelationFilter = {
     every?: DocumentWhereInput
     some?: DocumentWhereInput
@@ -20477,6 +21911,10 @@ export namespace Prisma {
   }
 
   export type CrewOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CrewOnboardingDraftOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -20789,6 +22227,11 @@ export namespace Prisma {
     not?: NestedEnumCrewStatusFilter<$PrismaModel> | $Enums.CrewStatus
   }
 
+  export type CrewOnboardingDraftNullableScalarRelationFilter = {
+    is?: CrewOnboardingDraftWhereInput | null
+    isNot?: CrewOnboardingDraftWhereInput | null
+  }
+
   export type CrewIdOrgIdCompoundUniqueInput = {
     id: string
     orgId: string
@@ -20881,6 +22324,107 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumCrewStatusFilter<$PrismaModel>
     _max?: NestedEnumCrewStatusFilter<$PrismaModel>
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type EnumDraftStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DraftStatus | EnumDraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DraftStatus[] | ListEnumDraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DraftStatus[] | ListEnumDraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDraftStatusFilter<$PrismaModel> | $Enums.DraftStatus
+  }
+
+  export type CrewScalarRelationFilter = {
+    is?: CrewWhereInput
+    isNot?: CrewWhereInput
+  }
+
+  export type OrganizationNullableScalarRelationFilter = {
+    is?: OrganizationWhereInput | null
+    isNot?: OrganizationWhereInput | null
+  }
+
+  export type CrewOnboardingDraftCountOrderByAggregateInput = {
+    id?: SortOrder
+    crewId?: SortOrder
+    data?: SortOrder
+    status?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrder
+  }
+
+  export type CrewOnboardingDraftMaxOrderByAggregateInput = {
+    id?: SortOrder
+    crewId?: SortOrder
+    status?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrder
+  }
+
+  export type CrewOnboardingDraftMinOrderByAggregateInput = {
+    id?: SortOrder
+    crewId?: SortOrder
+    status?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type EnumDraftStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DraftStatus | EnumDraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DraftStatus[] | ListEnumDraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DraftStatus[] | ListEnumDraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDraftStatusWithAggregatesFilter<$PrismaModel> | $Enums.DraftStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDraftStatusFilter<$PrismaModel>
+    _max?: NestedEnumDraftStatusFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -21249,11 +22793,6 @@ export namespace Prisma {
     not?: NestedEnumDocumentTypeFilter<$PrismaModel> | $Enums.DocumentType
   }
 
-  export type CrewScalarRelationFilter = {
-    is?: CrewWhereInput
-    isNot?: CrewWhereInput
-  }
-
   export type DocumentCountOrderByAggregateInput = {
     id?: SortOrder
     crewId?: SortOrder
@@ -21517,6 +23056,13 @@ export namespace Prisma {
     connect?: CrewWhereUniqueInput | CrewWhereUniqueInput[]
   }
 
+  export type CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<CrewOnboardingDraftCreateWithoutOrganizationInput, CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput> | CrewOnboardingDraftCreateWithoutOrganizationInput[] | CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput | CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput[]
+    createMany?: CrewOnboardingDraftCreateManyOrganizationInputEnvelope
+    connect?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+  }
+
   export type DocumentCreateNestedManyWithoutOrgInput = {
     create?: XOR<DocumentCreateWithoutOrgInput, DocumentUncheckedCreateWithoutOrgInput> | DocumentCreateWithoutOrgInput[] | DocumentUncheckedCreateWithoutOrgInput[]
     connectOrCreate?: DocumentCreateOrConnectWithoutOrgInput | DocumentCreateOrConnectWithoutOrgInput[]
@@ -21571,6 +23117,13 @@ export namespace Prisma {
     connectOrCreate?: CrewCreateOrConnectWithoutOrgInput | CrewCreateOrConnectWithoutOrgInput[]
     createMany?: CrewCreateManyOrgInputEnvelope
     connect?: CrewWhereUniqueInput | CrewWhereUniqueInput[]
+  }
+
+  export type CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<CrewOnboardingDraftCreateWithoutOrganizationInput, CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput> | CrewOnboardingDraftCreateWithoutOrganizationInput[] | CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput | CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput[]
+    createMany?: CrewOnboardingDraftCreateManyOrganizationInputEnvelope
+    connect?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
   }
 
   export type DocumentUncheckedCreateNestedManyWithoutOrgInput = {
@@ -21642,6 +23195,20 @@ export namespace Prisma {
     update?: CrewUpdateWithWhereUniqueWithoutOrgInput | CrewUpdateWithWhereUniqueWithoutOrgInput[]
     updateMany?: CrewUpdateManyWithWhereWithoutOrgInput | CrewUpdateManyWithWhereWithoutOrgInput[]
     deleteMany?: CrewScalarWhereInput | CrewScalarWhereInput[]
+  }
+
+  export type CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<CrewOnboardingDraftCreateWithoutOrganizationInput, CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput> | CrewOnboardingDraftCreateWithoutOrganizationInput[] | CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput | CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput[]
+    upsert?: CrewOnboardingDraftUpsertWithWhereUniqueWithoutOrganizationInput | CrewOnboardingDraftUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: CrewOnboardingDraftCreateManyOrganizationInputEnvelope
+    set?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+    disconnect?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+    delete?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+    connect?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+    update?: CrewOnboardingDraftUpdateWithWhereUniqueWithoutOrganizationInput | CrewOnboardingDraftUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: CrewOnboardingDraftUpdateManyWithWhereWithoutOrganizationInput | CrewOnboardingDraftUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: CrewOnboardingDraftScalarWhereInput | CrewOnboardingDraftScalarWhereInput[]
   }
 
   export type DocumentUpdateManyWithoutOrgNestedInput = {
@@ -21754,6 +23321,20 @@ export namespace Prisma {
     update?: CrewUpdateWithWhereUniqueWithoutOrgInput | CrewUpdateWithWhereUniqueWithoutOrgInput[]
     updateMany?: CrewUpdateManyWithWhereWithoutOrgInput | CrewUpdateManyWithWhereWithoutOrgInput[]
     deleteMany?: CrewScalarWhereInput | CrewScalarWhereInput[]
+  }
+
+  export type CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<CrewOnboardingDraftCreateWithoutOrganizationInput, CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput> | CrewOnboardingDraftCreateWithoutOrganizationInput[] | CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput | CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput[]
+    upsert?: CrewOnboardingDraftUpsertWithWhereUniqueWithoutOrganizationInput | CrewOnboardingDraftUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: CrewOnboardingDraftCreateManyOrganizationInputEnvelope
+    set?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+    disconnect?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+    delete?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+    connect?: CrewOnboardingDraftWhereUniqueInput | CrewOnboardingDraftWhereUniqueInput[]
+    update?: CrewOnboardingDraftUpdateWithWhereUniqueWithoutOrganizationInput | CrewOnboardingDraftUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: CrewOnboardingDraftUpdateManyWithWhereWithoutOrganizationInput | CrewOnboardingDraftUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: CrewOnboardingDraftScalarWhereInput | CrewOnboardingDraftScalarWhereInput[]
   }
 
   export type DocumentUncheckedUpdateManyWithoutOrgNestedInput = {
@@ -22062,6 +23643,12 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type CrewOnboardingDraftCreateNestedOneWithoutCrewInput = {
+    create?: XOR<CrewOnboardingDraftCreateWithoutCrewInput, CrewOnboardingDraftUncheckedCreateWithoutCrewInput>
+    connectOrCreate?: CrewOnboardingDraftCreateOrConnectWithoutCrewInput
+    connect?: CrewOnboardingDraftWhereUniqueInput
+  }
+
   export type OrganizationCreateNestedOneWithoutCrewInput = {
     create?: XOR<OrganizationCreateWithoutCrewInput, OrganizationUncheckedCreateWithoutCrewInput>
     connectOrCreate?: OrganizationCreateOrConnectWithoutCrewInput
@@ -22093,6 +23680,12 @@ export namespace Prisma {
     connectOrCreate?: VesselAssignmentCreateOrConnectWithoutCrewInput | VesselAssignmentCreateOrConnectWithoutCrewInput[]
     createMany?: VesselAssignmentCreateManyCrewInputEnvelope
     connect?: VesselAssignmentWhereUniqueInput | VesselAssignmentWhereUniqueInput[]
+  }
+
+  export type CrewOnboardingDraftUncheckedCreateNestedOneWithoutCrewInput = {
+    create?: XOR<CrewOnboardingDraftCreateWithoutCrewInput, CrewOnboardingDraftUncheckedCreateWithoutCrewInput>
+    connectOrCreate?: CrewOnboardingDraftCreateOrConnectWithoutCrewInput
+    connect?: CrewOnboardingDraftWhereUniqueInput
   }
 
   export type DocumentUncheckedCreateNestedManyWithoutCrewInput = {
@@ -22130,6 +23723,16 @@ export namespace Prisma {
 
   export type EnumCrewStatusFieldUpdateOperationsInput = {
     set?: $Enums.CrewStatus
+  }
+
+  export type CrewOnboardingDraftUpdateOneWithoutCrewNestedInput = {
+    create?: XOR<CrewOnboardingDraftCreateWithoutCrewInput, CrewOnboardingDraftUncheckedCreateWithoutCrewInput>
+    connectOrCreate?: CrewOnboardingDraftCreateOrConnectWithoutCrewInput
+    upsert?: CrewOnboardingDraftUpsertWithoutCrewInput
+    disconnect?: CrewOnboardingDraftWhereInput | boolean
+    delete?: CrewOnboardingDraftWhereInput | boolean
+    connect?: CrewOnboardingDraftWhereUniqueInput
+    update?: XOR<XOR<CrewOnboardingDraftUpdateToOneWithWhereWithoutCrewInput, CrewOnboardingDraftUpdateWithoutCrewInput>, CrewOnboardingDraftUncheckedUpdateWithoutCrewInput>
   }
 
   export type OrganizationUpdateOneRequiredWithoutCrewNestedInput = {
@@ -22190,6 +23793,16 @@ export namespace Prisma {
     deleteMany?: VesselAssignmentScalarWhereInput | VesselAssignmentScalarWhereInput[]
   }
 
+  export type CrewOnboardingDraftUncheckedUpdateOneWithoutCrewNestedInput = {
+    create?: XOR<CrewOnboardingDraftCreateWithoutCrewInput, CrewOnboardingDraftUncheckedCreateWithoutCrewInput>
+    connectOrCreate?: CrewOnboardingDraftCreateOrConnectWithoutCrewInput
+    upsert?: CrewOnboardingDraftUpsertWithoutCrewInput
+    disconnect?: CrewOnboardingDraftWhereInput | boolean
+    delete?: CrewOnboardingDraftWhereInput | boolean
+    connect?: CrewOnboardingDraftWhereUniqueInput
+    update?: XOR<XOR<CrewOnboardingDraftUpdateToOneWithWhereWithoutCrewInput, CrewOnboardingDraftUpdateWithoutCrewInput>, CrewOnboardingDraftUncheckedUpdateWithoutCrewInput>
+  }
+
   export type DocumentUncheckedUpdateManyWithoutCrewNestedInput = {
     create?: XOR<DocumentCreateWithoutCrewInput, DocumentUncheckedCreateWithoutCrewInput> | DocumentCreateWithoutCrewInput[] | DocumentUncheckedCreateWithoutCrewInput[]
     connectOrCreate?: DocumentCreateOrConnectWithoutCrewInput | DocumentCreateOrConnectWithoutCrewInput[]
@@ -22230,6 +23843,40 @@ export namespace Prisma {
     update?: VesselAssignmentUpdateWithWhereUniqueWithoutCrewInput | VesselAssignmentUpdateWithWhereUniqueWithoutCrewInput[]
     updateMany?: VesselAssignmentUpdateManyWithWhereWithoutCrewInput | VesselAssignmentUpdateManyWithWhereWithoutCrewInput[]
     deleteMany?: VesselAssignmentScalarWhereInput | VesselAssignmentScalarWhereInput[]
+  }
+
+  export type CrewCreateNestedOneWithoutOnboardingDraftInput = {
+    create?: XOR<CrewCreateWithoutOnboardingDraftInput, CrewUncheckedCreateWithoutOnboardingDraftInput>
+    connectOrCreate?: CrewCreateOrConnectWithoutOnboardingDraftInput
+    connect?: CrewWhereUniqueInput
+  }
+
+  export type OrganizationCreateNestedOneWithoutCrewOnboardingDraftInput = {
+    create?: XOR<OrganizationCreateWithoutCrewOnboardingDraftInput, OrganizationUncheckedCreateWithoutCrewOnboardingDraftInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutCrewOnboardingDraftInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type EnumDraftStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DraftStatus
+  }
+
+  export type CrewUpdateOneRequiredWithoutOnboardingDraftNestedInput = {
+    create?: XOR<CrewCreateWithoutOnboardingDraftInput, CrewUncheckedCreateWithoutOnboardingDraftInput>
+    connectOrCreate?: CrewCreateOrConnectWithoutOnboardingDraftInput
+    upsert?: CrewUpsertWithoutOnboardingDraftInput
+    connect?: CrewWhereUniqueInput
+    update?: XOR<XOR<CrewUpdateToOneWithWhereWithoutOnboardingDraftInput, CrewUpdateWithoutOnboardingDraftInput>, CrewUncheckedUpdateWithoutOnboardingDraftInput>
+  }
+
+  export type OrganizationUpdateOneWithoutCrewOnboardingDraftNestedInput = {
+    create?: XOR<OrganizationCreateWithoutCrewOnboardingDraftInput, OrganizationUncheckedCreateWithoutCrewOnboardingDraftInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutCrewOnboardingDraftInput
+    upsert?: OrganizationUpsertWithoutCrewOnboardingDraftInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutCrewOnboardingDraftInput, OrganizationUpdateWithoutCrewOnboardingDraftInput>, OrganizationUncheckedUpdateWithoutCrewOnboardingDraftInput>
   }
 
   export type OrganizationCreateNestedOneWithoutVesselsInput = {
@@ -22939,6 +24586,46 @@ export namespace Prisma {
     _max?: NestedEnumCrewStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDraftStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DraftStatus | EnumDraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DraftStatus[] | ListEnumDraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DraftStatus[] | ListEnumDraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDraftStatusFilter<$PrismaModel> | $Enums.DraftStatus
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumDraftStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DraftStatus | EnumDraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DraftStatus[] | ListEnumDraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DraftStatus[] | ListEnumDraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDraftStatusWithAggregatesFilter<$PrismaModel> | $Enums.DraftStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDraftStatusFilter<$PrismaModel>
+    _max?: NestedEnumDraftStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumVesselTypeNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.VesselType | EnumVesselTypeFieldRefInput<$PrismaModel> | null
     in?: $Enums.VesselType[] | ListEnumVesselTypeFieldRefInput<$PrismaModel> | null
@@ -23165,6 +24852,7 @@ export namespace Prisma {
     primaryDepartment: $Enums.VesselDepartment
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftCreateNestedOneWithoutCrewInput
     user: UserCreateNestedOneWithoutCrewInput
     Document?: DocumentCreateNestedManyWithoutCrewInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutCrewInput
@@ -23183,6 +24871,7 @@ export namespace Prisma {
     userId: string
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedOneWithoutCrewInput
     Document?: DocumentUncheckedCreateNestedManyWithoutCrewInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutCrewInput
     VesselAssignment?: VesselAssignmentUncheckedCreateNestedManyWithoutCrewInput
@@ -23195,6 +24884,32 @@ export namespace Prisma {
 
   export type CrewCreateManyOrgInputEnvelope = {
     data: CrewCreateManyOrgInput | CrewCreateManyOrgInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CrewOnboardingDraftCreateWithoutOrganizationInput = {
+    id?: string
+    data: JsonNullValueInput | InputJsonValue
+    status?: $Enums.DraftStatus
+    updatedAt?: Date | string
+    crew: CrewCreateNestedOneWithoutOnboardingDraftInput
+  }
+
+  export type CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    crewId: string
+    data: JsonNullValueInput | InputJsonValue
+    status?: $Enums.DraftStatus
+    updatedAt?: Date | string
+  }
+
+  export type CrewOnboardingDraftCreateOrConnectWithoutOrganizationInput = {
+    where: CrewOnboardingDraftWhereUniqueInput
+    create: XOR<CrewOnboardingDraftCreateWithoutOrganizationInput, CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type CrewOnboardingDraftCreateManyOrganizationInputEnvelope = {
+    data: CrewOnboardingDraftCreateManyOrganizationInput | CrewOnboardingDraftCreateManyOrganizationInput[]
     skipDuplicates?: boolean
   }
 
@@ -23488,6 +25203,34 @@ export namespace Prisma {
     status?: EnumCrewStatusFilter<"Crew"> | $Enums.CrewStatus
   }
 
+  export type CrewOnboardingDraftUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: CrewOnboardingDraftWhereUniqueInput
+    update: XOR<CrewOnboardingDraftUpdateWithoutOrganizationInput, CrewOnboardingDraftUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<CrewOnboardingDraftCreateWithoutOrganizationInput, CrewOnboardingDraftUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type CrewOnboardingDraftUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: CrewOnboardingDraftWhereUniqueInput
+    data: XOR<CrewOnboardingDraftUpdateWithoutOrganizationInput, CrewOnboardingDraftUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type CrewOnboardingDraftUpdateManyWithWhereWithoutOrganizationInput = {
+    where: CrewOnboardingDraftScalarWhereInput
+    data: XOR<CrewOnboardingDraftUpdateManyMutationInput, CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type CrewOnboardingDraftScalarWhereInput = {
+    AND?: CrewOnboardingDraftScalarWhereInput | CrewOnboardingDraftScalarWhereInput[]
+    OR?: CrewOnboardingDraftScalarWhereInput[]
+    NOT?: CrewOnboardingDraftScalarWhereInput | CrewOnboardingDraftScalarWhereInput[]
+    id?: StringFilter<"CrewOnboardingDraft"> | string
+    crewId?: StringFilter<"CrewOnboardingDraft"> | string
+    data?: JsonFilter<"CrewOnboardingDraft">
+    status?: EnumDraftStatusFilter<"CrewOnboardingDraft"> | $Enums.DraftStatus
+    updatedAt?: DateTimeFilter<"CrewOnboardingDraft"> | Date | string
+    organizationId?: StringNullableFilter<"CrewOnboardingDraft"> | string | null
+  }
+
   export type DocumentUpsertWithWhereUniqueWithoutOrgInput = {
     where: DocumentWhereUniqueInput
     update: XOR<DocumentUpdateWithoutOrgInput, DocumentUncheckedUpdateWithoutOrgInput>
@@ -23725,6 +25468,7 @@ export namespace Prisma {
     primaryDepartment: $Enums.VesselDepartment
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftCreateNestedOneWithoutCrewInput
     org: OrganizationCreateNestedOneWithoutCrewInput
     Document?: DocumentCreateNestedManyWithoutCrewInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutCrewInput
@@ -23743,6 +25487,7 @@ export namespace Prisma {
     primaryDepartment: $Enums.VesselDepartment
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedOneWithoutCrewInput
     Document?: DocumentUncheckedCreateNestedManyWithoutCrewInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutCrewInput
     VesselAssignment?: VesselAssignmentUncheckedCreateNestedManyWithoutCrewInput
@@ -23838,6 +25583,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     Document?: DocumentCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
     vessels?: VesselCreateNestedManyWithoutOrgInput
@@ -23852,6 +25598,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
     vessels?: VesselUncheckedCreateNestedManyWithoutOrgInput
@@ -23993,6 +25740,7 @@ export namespace Prisma {
     primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUpdateOneWithoutCrewNestedInput
     org?: OrganizationUpdateOneRequiredWithoutCrewNestedInput
     Document?: DocumentUpdateManyWithoutCrewNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutCrewNestedInput
@@ -24011,6 +25759,7 @@ export namespace Prisma {
     primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedUpdateOneWithoutCrewNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutCrewNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutCrewNestedInput
     VesselAssignment?: VesselAssignmentUncheckedUpdateManyWithoutCrewNestedInput
@@ -24092,6 +25841,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
     vessels?: VesselUpdateManyWithoutOrgNestedInput
@@ -24106,6 +25856,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
     vessels?: VesselUncheckedUpdateManyWithoutOrgNestedInput
@@ -24189,11 +25940,33 @@ export namespace Prisma {
     data: XOR<VesselUserRoleMapUpdateManyMutationInput, VesselUserRoleMapUncheckedUpdateManyWithoutUserInput>
   }
 
+  export type CrewOnboardingDraftCreateWithoutCrewInput = {
+    id?: string
+    data: JsonNullValueInput | InputJsonValue
+    status?: $Enums.DraftStatus
+    updatedAt?: Date | string
+    Organization?: OrganizationCreateNestedOneWithoutCrewOnboardingDraftInput
+  }
+
+  export type CrewOnboardingDraftUncheckedCreateWithoutCrewInput = {
+    id?: string
+    data: JsonNullValueInput | InputJsonValue
+    status?: $Enums.DraftStatus
+    updatedAt?: Date | string
+    organizationId?: string | null
+  }
+
+  export type CrewOnboardingDraftCreateOrConnectWithoutCrewInput = {
+    where: CrewOnboardingDraftWhereUniqueInput
+    create: XOR<CrewOnboardingDraftCreateWithoutCrewInput, CrewOnboardingDraftUncheckedCreateWithoutCrewInput>
+  }
+
   export type OrganizationCreateWithoutCrewInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     Document?: DocumentCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
     users?: UserCreateNestedManyWithoutOrgInput
@@ -24208,6 +25981,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
     users?: UserUncheckedCreateNestedManyWithoutOrgInput
@@ -24352,6 +26126,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CrewOnboardingDraftUpsertWithoutCrewInput = {
+    update: XOR<CrewOnboardingDraftUpdateWithoutCrewInput, CrewOnboardingDraftUncheckedUpdateWithoutCrewInput>
+    create: XOR<CrewOnboardingDraftCreateWithoutCrewInput, CrewOnboardingDraftUncheckedCreateWithoutCrewInput>
+    where?: CrewOnboardingDraftWhereInput
+  }
+
+  export type CrewOnboardingDraftUpdateToOneWithWhereWithoutCrewInput = {
+    where?: CrewOnboardingDraftWhereInput
+    data: XOR<CrewOnboardingDraftUpdateWithoutCrewInput, CrewOnboardingDraftUncheckedUpdateWithoutCrewInput>
+  }
+
+  export type CrewOnboardingDraftUpdateWithoutCrewInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Organization?: OrganizationUpdateOneWithoutCrewOnboardingDraftNestedInput
+  }
+
+  export type CrewOnboardingDraftUncheckedUpdateWithoutCrewInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type OrganizationUpsertWithoutCrewInput = {
     update: XOR<OrganizationUpdateWithoutCrewInput, OrganizationUncheckedUpdateWithoutCrewInput>
     create: XOR<OrganizationCreateWithoutCrewInput, OrganizationUncheckedCreateWithoutCrewInput>
@@ -24368,6 +26169,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
     users?: UserUpdateManyWithoutOrgNestedInput
@@ -24382,6 +26184,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
     users?: UserUncheckedUpdateManyWithoutOrgNestedInput
@@ -24482,12 +26285,177 @@ export namespace Prisma {
     data: XOR<VesselAssignmentUpdateManyMutationInput, VesselAssignmentUncheckedUpdateManyWithoutCrewInput>
   }
 
+  export type CrewCreateWithoutOnboardingDraftInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dateJoined?: Date | string | null
+    dateLeft?: Date | string | null
+    primaryDepartment: $Enums.VesselDepartment
+    rank: $Enums.VesselRole
+    status?: $Enums.CrewStatus
+    org: OrganizationCreateNestedOneWithoutCrewInput
+    user: UserCreateNestedOneWithoutCrewInput
+    Document?: DocumentCreateNestedManyWithoutCrewInput
+    TrainingRecord?: TrainingRecordCreateNestedManyWithoutCrewInput
+    VesselAssignment?: VesselAssignmentCreateNestedManyWithoutCrewInput
+  }
+
+  export type CrewUncheckedCreateWithoutOnboardingDraftInput = {
+    id?: string
+    orgId: string
+    firstName: string
+    lastName: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dateJoined?: Date | string | null
+    dateLeft?: Date | string | null
+    primaryDepartment: $Enums.VesselDepartment
+    userId: string
+    rank: $Enums.VesselRole
+    status?: $Enums.CrewStatus
+    Document?: DocumentUncheckedCreateNestedManyWithoutCrewInput
+    TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutCrewInput
+    VesselAssignment?: VesselAssignmentUncheckedCreateNestedManyWithoutCrewInput
+  }
+
+  export type CrewCreateOrConnectWithoutOnboardingDraftInput = {
+    where: CrewWhereUniqueInput
+    create: XOR<CrewCreateWithoutOnboardingDraftInput, CrewUncheckedCreateWithoutOnboardingDraftInput>
+  }
+
+  export type OrganizationCreateWithoutCrewOnboardingDraftInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    crew?: CrewCreateNestedManyWithoutOrgInput
+    Document?: DocumentCreateNestedManyWithoutOrgInput
+    TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
+    users?: UserCreateNestedManyWithoutOrgInput
+    vessels?: VesselCreateNestedManyWithoutOrgInput
+    vesselAssignments?: VesselAssignmentCreateNestedManyWithoutOrgInput
+    VesselRankRequirement?: VesselRankRequirementCreateNestedManyWithoutOrgInput
+    vesselUserRoleMaps?: VesselUserRoleMapCreateNestedManyWithoutOrgInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutCrewOnboardingDraftInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
+    TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
+    users?: UserUncheckedCreateNestedManyWithoutOrgInput
+    vessels?: VesselUncheckedCreateNestedManyWithoutOrgInput
+    vesselAssignments?: VesselAssignmentUncheckedCreateNestedManyWithoutOrgInput
+    VesselRankRequirement?: VesselRankRequirementUncheckedCreateNestedManyWithoutOrgInput
+    vesselUserRoleMaps?: VesselUserRoleMapUncheckedCreateNestedManyWithoutOrgInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutCrewOnboardingDraftInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutCrewOnboardingDraftInput, OrganizationUncheckedCreateWithoutCrewOnboardingDraftInput>
+  }
+
+  export type CrewUpsertWithoutOnboardingDraftInput = {
+    update: XOR<CrewUpdateWithoutOnboardingDraftInput, CrewUncheckedUpdateWithoutOnboardingDraftInput>
+    create: XOR<CrewCreateWithoutOnboardingDraftInput, CrewUncheckedCreateWithoutOnboardingDraftInput>
+    where?: CrewWhereInput
+  }
+
+  export type CrewUpdateToOneWithWhereWithoutOnboardingDraftInput = {
+    where?: CrewWhereInput
+    data: XOR<CrewUpdateWithoutOnboardingDraftInput, CrewUncheckedUpdateWithoutOnboardingDraftInput>
+  }
+
+  export type CrewUpdateWithoutOnboardingDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateJoined?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dateLeft?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
+    rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
+    status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    org?: OrganizationUpdateOneRequiredWithoutCrewNestedInput
+    user?: UserUpdateOneRequiredWithoutCrewNestedInput
+    Document?: DocumentUpdateManyWithoutCrewNestedInput
+    TrainingRecord?: TrainingRecordUpdateManyWithoutCrewNestedInput
+    VesselAssignment?: VesselAssignmentUpdateManyWithoutCrewNestedInput
+  }
+
+  export type CrewUncheckedUpdateWithoutOnboardingDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orgId?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateJoined?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dateLeft?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
+    userId?: StringFieldUpdateOperationsInput | string
+    rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
+    status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    Document?: DocumentUncheckedUpdateManyWithoutCrewNestedInput
+    TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutCrewNestedInput
+    VesselAssignment?: VesselAssignmentUncheckedUpdateManyWithoutCrewNestedInput
+  }
+
+  export type OrganizationUpsertWithoutCrewOnboardingDraftInput = {
+    update: XOR<OrganizationUpdateWithoutCrewOnboardingDraftInput, OrganizationUncheckedUpdateWithoutCrewOnboardingDraftInput>
+    create: XOR<OrganizationCreateWithoutCrewOnboardingDraftInput, OrganizationUncheckedCreateWithoutCrewOnboardingDraftInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutCrewOnboardingDraftInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutCrewOnboardingDraftInput, OrganizationUncheckedUpdateWithoutCrewOnboardingDraftInput>
+  }
+
+  export type OrganizationUpdateWithoutCrewOnboardingDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    crew?: CrewUpdateManyWithoutOrgNestedInput
+    Document?: DocumentUpdateManyWithoutOrgNestedInput
+    TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
+    users?: UserUpdateManyWithoutOrgNestedInput
+    vessels?: VesselUpdateManyWithoutOrgNestedInput
+    vesselAssignments?: VesselAssignmentUpdateManyWithoutOrgNestedInput
+    VesselRankRequirement?: VesselRankRequirementUpdateManyWithoutOrgNestedInput
+    vesselUserRoleMaps?: VesselUserRoleMapUpdateManyWithoutOrgNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutCrewOnboardingDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
+    TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
+    users?: UserUncheckedUpdateManyWithoutOrgNestedInput
+    vessels?: VesselUncheckedUpdateManyWithoutOrgNestedInput
+    vesselAssignments?: VesselAssignmentUncheckedUpdateManyWithoutOrgNestedInput
+    VesselRankRequirement?: VesselRankRequirementUncheckedUpdateManyWithoutOrgNestedInput
+    vesselUserRoleMaps?: VesselUserRoleMapUncheckedUpdateManyWithoutOrgNestedInput
+  }
+
   export type OrganizationCreateWithoutVesselsInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     Document?: DocumentCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
     users?: UserCreateNestedManyWithoutOrgInput
@@ -24502,6 +26470,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
     users?: UserUncheckedCreateNestedManyWithoutOrgInput
@@ -24609,6 +26578,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
     users?: UserUpdateManyWithoutOrgNestedInput
@@ -24623,6 +26593,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
     users?: UserUncheckedUpdateManyWithoutOrgNestedInput
@@ -24685,6 +26656,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     Document?: DocumentCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
     users?: UserCreateNestedManyWithoutOrgInput
@@ -24699,6 +26671,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
     users?: UserUncheckedCreateNestedManyWithoutOrgInput
@@ -24827,6 +26800,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
     users?: UserUpdateManyWithoutOrgNestedInput
@@ -24841,6 +26815,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
     users?: UserUncheckedUpdateManyWithoutOrgNestedInput
@@ -24965,6 +26940,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     Document?: DocumentCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
     users?: UserCreateNestedManyWithoutOrgInput
@@ -24979,6 +26955,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
     users?: UserUncheckedCreateNestedManyWithoutOrgInput
@@ -25070,6 +27047,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
     users?: UserUpdateManyWithoutOrgNestedInput
@@ -25084,6 +27062,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
     users?: UserUncheckedUpdateManyWithoutOrgNestedInput
@@ -25170,6 +27149,7 @@ export namespace Prisma {
     primaryDepartment: $Enums.VesselDepartment
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftCreateNestedOneWithoutCrewInput
     org: OrganizationCreateNestedOneWithoutCrewInput
     user: UserCreateNestedOneWithoutCrewInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutCrewInput
@@ -25189,6 +27169,7 @@ export namespace Prisma {
     userId: string
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedOneWithoutCrewInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutCrewInput
     VesselAssignment?: VesselAssignmentUncheckedCreateNestedManyWithoutCrewInput
   }
@@ -25204,6 +27185,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
     users?: UserCreateNestedManyWithoutOrgInput
     vessels?: VesselCreateNestedManyWithoutOrgInput
@@ -25218,6 +27200,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
     users?: UserUncheckedCreateNestedManyWithoutOrgInput
     vessels?: VesselUncheckedCreateNestedManyWithoutOrgInput
@@ -25253,6 +27236,7 @@ export namespace Prisma {
     primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUpdateOneWithoutCrewNestedInput
     org?: OrganizationUpdateOneRequiredWithoutCrewNestedInput
     user?: UserUpdateOneRequiredWithoutCrewNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutCrewNestedInput
@@ -25272,6 +27256,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedUpdateOneWithoutCrewNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutCrewNestedInput
     VesselAssignment?: VesselAssignmentUncheckedUpdateManyWithoutCrewNestedInput
   }
@@ -25293,6 +27278,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
     users?: UserUpdateManyWithoutOrgNestedInput
     vessels?: VesselUpdateManyWithoutOrgNestedInput
@@ -25307,6 +27293,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
     users?: UserUncheckedUpdateManyWithoutOrgNestedInput
     vessels?: VesselUncheckedUpdateManyWithoutOrgNestedInput
@@ -25326,6 +27313,7 @@ export namespace Prisma {
     primaryDepartment: $Enums.VesselDepartment
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftCreateNestedOneWithoutCrewInput
     org: OrganizationCreateNestedOneWithoutCrewInput
     user: UserCreateNestedOneWithoutCrewInput
     Document?: DocumentCreateNestedManyWithoutCrewInput
@@ -25345,6 +27333,7 @@ export namespace Prisma {
     userId: string
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedOneWithoutCrewInput
     Document?: DocumentUncheckedCreateNestedManyWithoutCrewInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutCrewInput
   }
@@ -25360,6 +27349,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     Document?: DocumentCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordCreateNestedManyWithoutOrgInput
     users?: UserCreateNestedManyWithoutOrgInput
@@ -25374,6 +27364,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
     TrainingRecord?: TrainingRecordUncheckedCreateNestedManyWithoutOrgInput
     users?: UserUncheckedCreateNestedManyWithoutOrgInput
@@ -25470,6 +27461,7 @@ export namespace Prisma {
     primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUpdateOneWithoutCrewNestedInput
     org?: OrganizationUpdateOneRequiredWithoutCrewNestedInput
     user?: UserUpdateOneRequiredWithoutCrewNestedInput
     Document?: DocumentUpdateManyWithoutCrewNestedInput
@@ -25489,6 +27481,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedUpdateOneWithoutCrewNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutCrewNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutCrewNestedInput
   }
@@ -25510,6 +27503,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutOrgNestedInput
     users?: UserUpdateManyWithoutOrgNestedInput
@@ -25524,6 +27518,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutOrgNestedInput
     users?: UserUncheckedUpdateManyWithoutOrgNestedInput
@@ -25790,6 +27785,7 @@ export namespace Prisma {
     primaryDepartment: $Enums.VesselDepartment
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftCreateNestedOneWithoutCrewInput
     org: OrganizationCreateNestedOneWithoutCrewInput
     user: UserCreateNestedOneWithoutCrewInput
     Document?: DocumentCreateNestedManyWithoutCrewInput
@@ -25809,6 +27805,7 @@ export namespace Prisma {
     userId: string
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedOneWithoutCrewInput
     Document?: DocumentUncheckedCreateNestedManyWithoutCrewInput
     VesselAssignment?: VesselAssignmentUncheckedCreateNestedManyWithoutCrewInput
   }
@@ -25824,6 +27821,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftCreateNestedManyWithoutOrganizationInput
     Document?: DocumentCreateNestedManyWithoutOrgInput
     users?: UserCreateNestedManyWithoutOrgInput
     vessels?: VesselCreateNestedManyWithoutOrgInput
@@ -25838,6 +27836,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     crew?: CrewUncheckedCreateNestedManyWithoutOrgInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedCreateNestedManyWithoutOrganizationInput
     Document?: DocumentUncheckedCreateNestedManyWithoutOrgInput
     users?: UserUncheckedCreateNestedManyWithoutOrgInput
     vessels?: VesselUncheckedCreateNestedManyWithoutOrgInput
@@ -25904,6 +27903,7 @@ export namespace Prisma {
     primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUpdateOneWithoutCrewNestedInput
     org?: OrganizationUpdateOneRequiredWithoutCrewNestedInput
     user?: UserUpdateOneRequiredWithoutCrewNestedInput
     Document?: DocumentUpdateManyWithoutCrewNestedInput
@@ -25923,6 +27923,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedUpdateOneWithoutCrewNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutCrewNestedInput
     VesselAssignment?: VesselAssignmentUncheckedUpdateManyWithoutCrewNestedInput
   }
@@ -25944,6 +27945,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUpdateManyWithoutOrgNestedInput
     users?: UserUpdateManyWithoutOrgNestedInput
     vessels?: VesselUpdateManyWithoutOrgNestedInput
@@ -25958,6 +27960,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     crew?: CrewUncheckedUpdateManyWithoutOrgNestedInput
+    crewOnboardingDraft?: CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutOrgNestedInput
     users?: UserUncheckedUpdateManyWithoutOrgNestedInput
     vessels?: VesselUncheckedUpdateManyWithoutOrgNestedInput
@@ -25978,6 +27981,14 @@ export namespace Prisma {
     userId: string
     rank: $Enums.VesselRole
     status?: $Enums.CrewStatus
+  }
+
+  export type CrewOnboardingDraftCreateManyOrganizationInput = {
+    id?: string
+    crewId: string
+    data: JsonNullValueInput | InputJsonValue
+    status?: $Enums.DraftStatus
+    updatedAt?: Date | string
   }
 
   export type DocumentCreateManyOrgInput = {
@@ -26077,6 +28088,7 @@ export namespace Prisma {
     primaryDepartment?: EnumVesselDepartmentFieldUpdateOperationsInput | $Enums.VesselDepartment
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUpdateOneWithoutCrewNestedInput
     user?: UserUpdateOneRequiredWithoutCrewNestedInput
     Document?: DocumentUpdateManyWithoutCrewNestedInput
     TrainingRecord?: TrainingRecordUpdateManyWithoutCrewNestedInput
@@ -26095,6 +28107,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+    onboardingDraft?: CrewOnboardingDraftUncheckedUpdateOneWithoutCrewNestedInput
     Document?: DocumentUncheckedUpdateManyWithoutCrewNestedInput
     TrainingRecord?: TrainingRecordUncheckedUpdateManyWithoutCrewNestedInput
     VesselAssignment?: VesselAssignmentUncheckedUpdateManyWithoutCrewNestedInput
@@ -26112,6 +28125,30 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     rank?: EnumVesselRoleFieldUpdateOperationsInput | $Enums.VesselRole
     status?: EnumCrewStatusFieldUpdateOperationsInput | $Enums.CrewStatus
+  }
+
+  export type CrewOnboardingDraftUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    crew?: CrewUpdateOneRequiredWithoutOnboardingDraftNestedInput
+  }
+
+  export type CrewOnboardingDraftUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    crewId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrewOnboardingDraftUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    crewId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    status?: EnumDraftStatusFieldUpdateOperationsInput | $Enums.DraftStatus
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DocumentUpdateWithoutOrgInput = {

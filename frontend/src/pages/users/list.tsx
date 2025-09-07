@@ -1,4 +1,10 @@
-import { List, useTable, CreateButton, EditButton } from "@refinedev/antd";
+import {
+  List,
+  useTable,
+  CreateButton,
+  EditButton,
+  DeleteButton
+} from "@refinedev/antd";
 import { LogicalFilter, useGetIdentity, useNavigation } from "@refinedev/core";
 import { Table, Input, Select, Space, notification } from "antd";
 import { useEffect, useState } from "react";
@@ -149,7 +155,10 @@ export const UserList = () => {
             title="Actions"
             dataIndex="actions"
             render={(_, record: IUser) => (
-              <EditButton size="small" hideText recordItemId={record.id} />
+              <Space>
+                <EditButton size="small" hideText recordItemId={record.id} />
+                <DeleteButton size="small" hideText recordItemId={record.id} />
+              </Space>
             )}
           />
         )}

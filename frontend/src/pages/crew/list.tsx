@@ -6,7 +6,8 @@ import {
   FilterDropdown,
   ShowButton,
   EditButton,
-  DateField
+  DateField,
+  DeleteButton
 } from "@refinedev/antd";
 import { Table, Input, Select, Space, Tag, Button, Modal } from "antd";
 import {
@@ -282,6 +283,7 @@ export const CrewList: React.FC = () => {
                 ) : null}
                 <ShowButton hideText recordItemId={r.id} />
                 <EditButton hideText recordItemId={r.id} />
+                <DeleteButton hideText recordItemId={r.id} />
               </Space>
             );
           }}

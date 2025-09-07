@@ -165,6 +165,15 @@ exports.Prisma.CrewScalarFieldEnum = {
   status: 'status'
 };
 
+exports.Prisma.CrewOnboardingDraftScalarFieldEnum = {
+  id: 'id',
+  crewId: 'crewId',
+  data: 'data',
+  status: 'status',
+  updatedAt: 'updatedAt',
+  organizationId: 'organizationId'
+};
+
 exports.Prisma.VesselScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -280,6 +289,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -424,6 +437,11 @@ exports.CrewStatus = exports.$Enums.CrewStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
   ON_LEAVE: 'ON_LEAVE'
+};
+
+exports.DraftStatus = exports.$Enums.DraftStatus = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
 };
 
 exports.VesselType = exports.$Enums.VesselType = {
@@ -640,6 +658,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   AuditLog: 'AuditLog',
   Crew: 'Crew',
+  CrewOnboardingDraft: 'CrewOnboardingDraft',
   Vessel: 'Vessel',
   VesselUserRoleMap: 'VesselUserRoleMap',
   VesselRankRequirement: 'VesselRankRequirement',

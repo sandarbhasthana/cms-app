@@ -15,6 +15,7 @@ model Organization {
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @updatedAt
   crew                  Crew[]
+  crewOnboardingDraft   CrewOnboardingDraft[]
   Document              Document[]
   TrainingRecord        TrainingRecord[]
   users                 User[]
@@ -67,20 +68,21 @@ model AuditLog {
 
 /// Crew members that work for the company
 model Crew {
-  id                String             @id @default(uuid())
+  id                String               @id @default(uuid())
   orgId             String
   firstName         String
   lastName          String
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
   dateJoined        DateTime?
   dateLeft          DateTime?
   primaryDepartment VesselDepartment
-  userId            String             @unique
+  userId            String               @unique
   rank              VesselRole
-  status            CrewStatus         @default(ACTIVE)
-  org               Organization       @relation(fields: [orgId], references: [id])
-  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status            CrewStatus           @default(ACTIVE)
+  onboardingDraft   CrewOnboardingDraft?
+  org               Organization         @relation(fields: [orgId], references: [id])
+  user              User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   Document          Document[]
   TrainingRecord    TrainingRecord[]
   VesselAssignment  VesselAssignment[]
@@ -89,6 +91,18 @@ model Crew {
   @@unique([id, orgId], map: "u_crew_id_org")
   @@index([orgId, lastName, firstName])
   @@index([orgId, rank])
+}
+
+/// New model for onboarding draft
+model CrewOnboardingDraft {
+  id             String        @id @default(uuid())
+  crewId         String        @unique
+  data           Json
+  status         DraftStatus   @default(IN_PROGRESS)
+  updatedAt      DateTime      @updatedAt
+  crew           Crew          @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  Organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
 }
 
 /// Vessels that the company owns and uses
@@ -646,4 +660,10 @@ enum CrewStatus {
 /// Define vessel user roles
 enum VesselUserRole {
   VESSEL_ADMIN
+}
+
+/// Define draft statuses
+enum DraftStatus {
+  IN_PROGRESS
+  COMPLETED
 }
