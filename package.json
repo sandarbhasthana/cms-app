@@ -1,0 +1,24 @@
+{
+  "name": "cms-app-monorepo",
+  "version": "1.0.0",
+  "description": "CMS App - Crew Management System",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm install --prefix packages/prisma && npm install --prefix frontend && npm install --prefix backend",
+    "build:prisma": "cd packages/prisma && npm run generate",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "build:all": "npm run build:prisma && npm run build:frontend && npm run build:backend",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run start:dev",
+    "vercel:build": "npm run build:prisma && cd frontend && npm run build"
+  },
+  "keywords": ["cms", "crew-management", "nestjs", "react", "refine"],
+  "author": "CMS Team",
+  "license": "MIT"
+}
