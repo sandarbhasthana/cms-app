@@ -3,11 +3,14 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
-  optimizeDeps: {
-    include: ["@cms-app/prisma"]
+  resolve: {
+    alias: {
+      // Alias the Prisma package to use browser-safe types only
+      "@cms-app/prisma": "@cms-app/prisma/browser-types"
+    }
   },
-  ssr: {
-    noExternal: ["@cms-app/prisma"]
+  optimizeDeps: {
+    exclude: ["@cms-app/prisma"]
   },
   build: {
     // Generate source maps for better error debugging

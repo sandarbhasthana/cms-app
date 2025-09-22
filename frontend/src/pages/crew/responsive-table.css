@@ -1,0 +1,92 @@
+/* Responsive Table Styles for Crew List */
+
+/* Mobile First - Show only critical columns */
+.responsive-column-tablet,
+.responsive-column-desktop {
+  display: none !important;
+}
+
+/* Tablet and up - Show important columns */
+@media (min-width: 768px) {
+  .responsive-column-tablet {
+    display: table-cell !important;
+  }
+}
+
+/* Desktop and up - Show all columns */
+@media (min-width: 1024px) {
+  .responsive-column-desktop {
+    display: table-cell !important;
+  }
+}
+
+/* Adjust table scroll width for different screen sizes */
+@media (max-width: 767px) {
+  /* Mobile: Only Name, Onboarding Status, Actions = ~470px */
+  .ant-table-body {
+    min-width: 470px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet: + Department, Status = ~690px */
+  .ant-table-body {
+    min-width: 690px;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop: All columns = ~880px */
+  .ant-table-body {
+    min-width: 880px;
+  }
+}
+
+/* Actions column styling removed - no sticky positioning needed */
+
+/* Prevent text wrapping in table headers */
+.ant-table-thead > tr > th {
+  white-space: nowrap;
+}
+
+/* Action button icon alignment */
+.ant-table-tbody .ant-space .ant-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 7px;
+}
+
+.ant-table-tbody .ant-space .ant-btn .anticon,
+.ant-table-tbody .ant-space .ant-btn svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+/* Mobile-friendly action buttons */
+@media (max-width: 767px) {
+  .ant-space-item .ant-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .ant-space-item .ant-btn-sm {
+    padding: 2px 6px;
+    font-size: 11px;
+  }
+}
+
+/* Improve table readability on mobile */
+@media (max-width: 767px) {
+  .ant-table-thead > tr > th {
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+
+  .ant-table-tbody > tr > td {
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+}

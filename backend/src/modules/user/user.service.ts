@@ -9,16 +9,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma, Role } from '@cms-app/prisma';
 import * as bcrypt from 'bcrypt';
 
-function splitName(name: string): { firstName: string; lastName: string } {
-  const parts = (name ?? '').trim().split(/\s+/);
-  if (parts.length === 0) return { firstName: '', lastName: '' };
-  if (parts.length === 1) return { firstName: parts[0], lastName: '' };
-  return {
-    firstName: parts.slice(0, -1).join(' '),
-    lastName: parts.slice(-1)[0],
-  };
-}
-
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -65,36 +55,7 @@ export class UserService {
         },
       });
 
-      // 2) If CREW, create the Crew profile linked to this user
-      if (createUserDto.role === Role.CREW) {
-        if (!createUserDto.primaryDepartment || !createUserDto.rank) {
-          throw new BadRequestException(
-            'Department and Rank are required for CREW users.',
-          );
-        }
-
-        // Prefer explicit first/last if provided; else split from name
-        const { firstName, lastName } =
-          createUserDto.firstName || createUserDto.lastName
-            ? {
-                firstName: createUserDto.firstName ?? '',
-                lastName: createUserDto.lastName ?? '',
-              }
-            : splitName(createUserDto.name);
-
-        await tx.crew.create({
-          data: {
-            orgId,
-            userId: user.id,
-            firstName,
-            lastName,
-            primaryDepartment: createUserDto.primaryDepartment,
-            rank: createUserDto.rank,
-            status: 'ACTIVE',
-            dateJoined: new Date(),
-          },
-        });
-      }
+      // Note: Crew records are now created separately through the onboarding process
 
       return user;
     });
@@ -145,10 +106,12 @@ export class UserService {
           // Include crew data for CREW users
           crew: {
             select: {
+              id: true,
               firstName: true,
               lastName: true,
               primaryDepartment: true,
               rank: true,
+              status: true,
             },
           },
         },
@@ -175,10 +138,12 @@ export class UserService {
         // Include crew data for CREW users
         crew: {
           select: {
+            id: true,
             firstName: true,
             lastName: true,
             primaryDepartment: true,
             rank: true,
+            status: true,
           },
         },
       },

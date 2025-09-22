@@ -17,6 +17,10 @@ export declare namespace Prisma {
   export type CrewOrderByWithRelationInput =
     PrismaModule.Prisma.CrewOrderByWithRelationInput;
   export type CrewUpdateInput = PrismaModule.Prisma.CrewUpdateInput;
+  export type UserWhereInput = PrismaModule.Prisma.UserWhereInput;
+  export type UserOrderByWithRelationInput =
+    PrismaModule.Prisma.UserOrderByWithRelationInput;
+  export type UserGetPayload<T> = PrismaModule.Prisma.UserGetPayload<T>;
   export type TransactionClient = PrismaModule.Prisma.TransactionClient;
   export type PrismaClientKnownRequestError =
     PrismaModule.Prisma.PrismaClientKnownRequestError;

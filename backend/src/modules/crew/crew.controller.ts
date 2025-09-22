@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -58,6 +59,12 @@ export class CrewController {
 
   @Patch(':id/deactivate')
   deactivate(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    return this.service.deactivate(id, req.user);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    // Map DELETE to deactivate for Refine compatibility
     return this.service.deactivate(id, req.user);
   }
 

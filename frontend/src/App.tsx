@@ -6,6 +6,7 @@ import {
   useNotificationProvider
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
+import "./styles/global.css";
 
 import routerBindings, {
   CatchAllNavigate,
@@ -38,6 +39,7 @@ import { CrewList } from "./pages/crew/list";
 import { CrewCreate } from "./pages/crew/create";
 import { CrewEdit } from "./pages/crew/edit";
 import { CrewShow } from "./pages/crew/show";
+import OnboardingPage from "./pages/crew/onboarding";
 import ErrorBoundary from "./components/ErrorBoundary";
 import {
   setupGlobalErrorHandling,
@@ -103,7 +105,7 @@ function App() {
                         label: "Crew",
                         title: "Crew Management"
                       },
-                      create: "/crew/create",
+                      create: "/crew/onboarding",
                       edit: "/crew/:id/edit",
                       show: "/crew/show/:id"
                     }
@@ -148,9 +150,13 @@ function App() {
                         element={<VesselShow />}
                       />
                       <Route path="/crew" element={<CrewList />} />
-                      <Route path="/crew/create" element={<CrewCreate />} />
+                      <Route
+                        path="/crew/onboarding"
+                        element={<OnboardingPage />}
+                      />
                       <Route path="/crew/:id/edit" element={<CrewEdit />} />
                       <Route path="/crew/show/:id" element={<CrewShow />} />
+                      <Route path="/crew/create" element={<CrewCreate />} />
                       {/* Add your resource routes here */}
                       <Route path="*" element={<ErrorComponent />} />
                     </Route>

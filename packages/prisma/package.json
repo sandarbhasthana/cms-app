@@ -28,6 +28,12 @@
       "require": "./index.js",
       "default": "./index.js"
     },
+    "./browser-types": {
+      "types": "./browser-types.d.ts",
+      "import": "./browser-types.js",
+      "require": "./browser-types.js",
+      "default": "./browser-types.js"
+    },
     "./client": {
       "types": "./generated/client/index.d.ts",
       "import": "./generated/client/index.js",

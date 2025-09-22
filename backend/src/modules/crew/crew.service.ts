@@ -11,6 +11,12 @@ import { UpdateCrewDto } from './dto/update-crew.dto';
 import { AuthenticatedUser } from '../../common/types/authenticated-request';
 import { Prisma, Role, VesselRole, VesselUserRole } from '@cms-app/prisma';
 
+// Proper type for User where input with crew relation filtering
+// We need to use intersection with Prisma's base type and add our custom fields
+type UserWhereWithCrewFilter = Prisma.UserWhereInput & {
+  crew?: Prisma.CrewWhereInput;
+};
+
 const VESSEL_ADMIN_ROLES = new Set<VesselRole>([
   // Grant vessel admin for these roles (tweak as you prefer)
   VesselRole.MASTER,
@@ -66,53 +72,161 @@ export class CrewService {
 
   async list(query: SearchCrewDto, user: AuthenticatedUser) {
     const { q, rank, primaryDepartment, status, _sort, _order } = query;
-    const where: Prisma.CrewWhereInput = {
+
+    // Build user where clause for CREW role users
+    const userWhere: UserWhereWithCrewFilter = {
       orgId: user.orgId,
-      ...(rank ? { rank } : {}),
-      ...(primaryDepartment ? { primaryDepartment } : {}),
-      ...(status ? { status } : {}),
-      ...(q
-        ? {
+      role: Role.CREW,
+    };
+
+    // Add search functionality
+    if (q) {
+      userWhere.OR = [
+        { name: { contains: q, mode: 'insensitive' } },
+        { email: { contains: q, mode: 'insensitive' } },
+        // Also search in crew data if it exists
+        {
+          crew: {
             OR: [
               { firstName: { contains: q, mode: 'insensitive' } },
               { lastName: { contains: q, mode: 'insensitive' } },
-              { user: { email: { contains: q, mode: 'insensitive' } } },
             ],
-          }
-        : {}),
-    };
+          },
+        },
+      ];
+    }
+
+    // Add crew-specific filters if provided
+    if (rank || primaryDepartment || status) {
+      userWhere.crew = {
+        ...(rank ? { rank } : {}),
+        ...(primaryDepartment ? { primaryDepartment } : {}),
+        ...(status ? { status } : {}),
+      };
+    }
 
     // Build orderBy based on sort parameters
-    let orderBy: Prisma.CrewOrderByWithRelationInput[] = [
-      { lastName: 'asc' },
-      { firstName: 'asc' },
-    ];
+    let orderBy: Prisma.UserOrderByWithRelationInput[] = [{ name: 'asc' }];
 
     if (_sort && _order) {
       const sortOrder = _order === 'desc' ? 'desc' : 'asc';
 
-      // Handle nested sorting for email (user.email)
-      if (_sort === 'email' || _sort === 'user.email') {
-        orderBy = [{ user: { email: sortOrder } }];
+      if (_sort === 'email') {
+        orderBy = [{ email: sortOrder }];
       } else if (_sort === 'name') {
-        // For name sorting, sort by lastName then firstName
-        orderBy = [{ lastName: sortOrder }, { firstName: sortOrder }];
+        orderBy = [{ name: sortOrder }];
       } else if (_sort === 'dateJoined') {
-        orderBy = [{ dateJoined: sortOrder }];
+        orderBy = [{ crew: { dateJoined: sortOrder } }];
       } else if (['primaryDepartment', 'rank', 'status'].includes(_sort)) {
-        orderBy = [{ [_sort]: sortOrder }];
+        orderBy = [{ crew: { [_sort]: sortOrder } }];
       }
     }
 
     const [data, total] = await this.prisma.$transaction([
-      this.prisma.crew.findMany({
-        where,
+      this.prisma.user.findMany({
+        where: userWhere,
         orderBy,
-        include: { user: { select: { email: true, createdAt: true } } },
+        include: {
+          crew: {
+            include: {
+              VesselAssignment: {
+                where: { releasedAt: null },
+                orderBy: { assignedAt: 'desc' },
+                take: 1,
+                include: { vessel: { select: { name: true } } },
+              },
+            },
+          },
+        },
       }),
-      this.prisma.crew.count({ where }),
+      this.prisma.user.count({ where: userWhere }),
     ]);
-    return { data, total };
+
+    // Define the expected user type from our query
+    type UserWithCrew = {
+      id: string;
+      email: string;
+      name: string;
+      createdAt: Date;
+      crew?: {
+        id: string;
+        firstName?: string;
+        lastName?: string;
+        primaryDepartment?: string;
+        rank?: string;
+        status?: string;
+        dateJoined?: Date;
+        VesselAssignment?: Array<{
+          vessel: { name: string };
+        }>;
+      } | null;
+    };
+
+    // Transform the data to match the expected crew list format
+    const transformedData = (data as UserWithCrew[]).map((user) => {
+      const crew = user.crew;
+      return {
+        id: crew?.id || `user-${user.id}`, // Use crew ID if exists, otherwise user ID with prefix
+        userId: user.id,
+        firstName: crew?.firstName || this.extractFirstName(user.name),
+        lastName: crew?.lastName || this.extractLastName(user.name),
+        primaryDepartment: crew?.primaryDepartment || null,
+        rank: crew?.rank || null,
+        status: crew?.status || null,
+        dateJoined: crew?.dateJoined || null,
+        user: {
+          email: user.email,
+          createdAt: user.createdAt,
+        },
+        VesselAssignment: crew?.VesselAssignment || [],
+        // Add onboarding status
+        onboardingStatus: this.determineOnboardingStatus(crew),
+      };
+    });
+
+    return { data: transformedData, total };
+  }
+
+  // Helper method to extract first name from full name
+  private extractFirstName(fullName: string): string {
+    const parts = (fullName ?? '').trim().split(/\s+/);
+    return parts.length > 0 ? parts[0] : '';
+  }
+
+  // Helper method to extract last name from full name
+  private extractLastName(fullName: string): string {
+    const parts = (fullName ?? '').trim().split(/\s+/);
+    if (parts.length <= 1) return '';
+    return parts.slice(-1)[0];
+  }
+
+  // Helper method to determine onboarding status
+  private determineOnboardingStatus(
+    crew:
+      | {
+          id?: string;
+          firstName?: string;
+          lastName?: string;
+          primaryDepartment?: string;
+          rank?: string;
+          status?: string;
+          dateJoined?: Date;
+          VesselAssignment?: Array<any>;
+        }
+      | null
+      | undefined,
+  ): 'PENDING' | 'IN_PROGRESS' | 'ONBOARDED' {
+    if (!crew) return 'PENDING';
+
+    // Check if crew record has all essential fields
+    const hasEssentialFields =
+      crew.firstName && crew.lastName && crew.primaryDepartment && crew.rank;
+
+    if (hasEssentialFields) {
+      return 'ONBOARDED';
+    } else {
+      return 'IN_PROGRESS';
+    }
   }
 
   async get(id: string, user: AuthenticatedUser) {

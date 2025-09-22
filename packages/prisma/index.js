@@ -4,6 +4,8 @@ import * as PrismaModule from "./generated/client/index.js";
 export const PrismaClient = PrismaModule.PrismaClient;
 export const Prisma = PrismaModule.Prisma;
 export default PrismaModule.PrismaClient;
+// Export browser-safe enums for frontend use
+export * from "./browser-types.js";
 // Re-export all enum values
 export const Role = PrismaModule.Role;
 export const VesselRole = PrismaModule.VesselRole;

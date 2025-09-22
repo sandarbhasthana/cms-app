@@ -3,13 +3,15 @@
 
 import { VesselRole, VesselDepartment, CrewStatus } from "@cms-app/prisma";
 
-export const humanizeEnum = (v: string) =>
-  v
+export const humanizeEnum = (v: string | null | undefined): string => {
+  if (!v) return "-";
+  return v
     .replace(/_/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase()
     .replace(/\b\w/g, (m) => m.toUpperCase());
+};
 
 export const DEPARTMENTS = Object.values(VesselDepartment).map((dept) => ({
   label: humanizeEnum(dept as string),
