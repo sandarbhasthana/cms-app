@@ -18,39 +18,47 @@ async function main() {
     },
   });
 
-  const admin = await prisma.user.upsert({
+  // First, try to find existing admin
+  let admin = await prisma.user.findUnique({
     where: {
       orgId_email: {
         orgId: org.id,
         email: 'sandarbh@example.com',
       },
     },
-    update: {
-      password: hashedPassword, // Update password
-      role: 'SUPER_ADMIN',
-      name: 'Super Admin',
-    },
-    create: {
-      email: 'sandarbh@example.com', // 📨 Change if needed
-      password: hashedPassword, // 🔐 Secure hash
-      role: 'SUPER_ADMIN', // 🎩 Set to any Role enum
-      name: 'Super Admin', // 👤 Required field
-      orgId: org.id, // 🏢 Use the organization ID
-      createdBy: 'system', // Will be updated after creation
-      updatedBy: 'system', // Will be updated after creation
-    },
   });
 
-  // Update the admin to reference itself as creator/updater if it was just created
-  if (admin.createdBy === 'system') {
-    await prisma.user.update({
+  if (admin) {
+    // Update existing admin
+    admin = await prisma.user.update({
       where: { id: admin.id },
       data: {
-        createdBy: admin.id,
-        updatedBy: admin.id,
+        password: hashedPassword,
+        role: 'SUPER_ADMIN',
+        name: 'Super Admin',
+      },
+    });
+  } else {
+    // Create new admin without createdBy/updatedBy first
+    admin = await prisma.user.create({
+      data: {
+        email: 'sandarbh@example.com',
+        password: hashedPassword,
+        role: 'SUPER_ADMIN',
+        name: 'Super Admin',
+        orgId: org.id,
       },
     });
   }
+
+  // Update the admin to reference itself as creator/updater
+  await prisma.user.update({
+    where: { id: admin.id },
+    data: {
+      createdBy: admin.id,
+      updatedBy: admin.id,
+    },
+  });
 
   console.log('✅ Admin user created:\n', {
     email: admin.email,
@@ -59,28 +67,40 @@ async function main() {
   });
 
   // Also create an HR user for testing
-  const hrUser = await prisma.user.upsert({
+  let hrUser = await prisma.user.findUnique({
     where: {
       orgId_email: {
         orgId: org.id,
         email: 'hr@example.com',
       },
     },
-    update: {
-      password: hashedPassword, // Update password
-      role: 'HR',
-      name: 'HR User',
-    },
-    create: {
-      email: 'hr@example.com',
-      password: hashedPassword,
-      role: 'HR',
-      name: 'HR User',
-      orgId: org.id,
-      createdBy: admin.id,
-      updatedBy: admin.id,
-    },
   });
+
+  if (hrUser) {
+    // Update existing HR user
+    hrUser = await prisma.user.update({
+      where: { id: hrUser.id },
+      data: {
+        password: hashedPassword,
+        role: 'HR',
+        name: 'HR User',
+        updatedBy: admin.id,
+      },
+    });
+  } else {
+    // Create new HR user
+    hrUser = await prisma.user.create({
+      data: {
+        email: 'hr@example.com',
+        password: hashedPassword,
+        role: 'HR',
+        name: 'HR User',
+        orgId: org.id,
+        createdBy: admin.id,
+        updatedBy: admin.id,
+      },
+    });
+  }
 
   console.log('✅ HR user created:\n', {
     email: hrUser.email,
