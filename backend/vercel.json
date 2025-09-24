@@ -2,19 +2,24 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/main.ts",
+      "src": "dist/main.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/main.ts"
+      "dest": "dist/main.js"
     }
   ],
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run vercel-build",
   "installCommand": "npm install",
   "env": {
     "NODE_ENV": "production"
+  },
+  "functions": {
+    "dist/main.js": {
+      "maxDuration": 30
+    }
   }
 }
