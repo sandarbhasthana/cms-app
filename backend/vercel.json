@@ -1,20 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "dist/main.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "dist/main.js"
-    }
-  ],
+  "builds": [{ "src": "dist/main.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "dist/main.js" }],
   "buildCommand": "npm run vercel-build",
   "installCommand": "npm install",
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "env": { "NODE_ENV": "production" }
 }
